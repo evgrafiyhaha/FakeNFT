@@ -9,10 +9,17 @@ import UIKit
 import ProgressHUD
 import Kingfisher
 
+protocol CatalogViewProtocol: AnyObject {
+    func showLoading()
+    func hideLoading()
+    func updateCollections(_ collections: [CatalogCollection])
+    func showError(_ message: String)
+}
+
 class CatalogViewController: UIViewController {
     
     private var collection: [CatalogCollection] = []
-    private let serviceAssembly: ServicesAssembly
+    private var presenter: CatalogPresenterProtocol!
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -30,8 +37,9 @@ class CatalogViewController: UIViewController {
     }()
     
     init(serviceAssembly: ServicesAssembly) {
-        self.serviceAssembly = serviceAssembly
         super.init(nibName: nil, bundle: nil)
+        self.presenter = CatalogPresenter(view: self, networkService: serviceAssembly.catalogNetworkClient)
+
     }
     
     required init?(coder: NSCoder) {
@@ -42,9 +50,8 @@ class CatalogViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
-        
         setupUI()
-        loadCollection()
+        presenter.viewDidLoad()
     }
     
     private func setupUI() {
@@ -66,25 +73,6 @@ class CatalogViewController: UIViewController {
         ])
     }
     
-    private func loadCollection(){
-        ProgressHUD.show()
-        let request = CatalogRequest()
-        let networkService = DefaultNetworkClient()
-        networkService.send(request: request, type: [CatalogCollection].self) { [weak self] result in
-            switch result {
-            case .success(let collections):
-                self?.collection = collections
-                self?.tableView.reloadData()
-                ProgressHUD.dismiss()
-            case.failure(let error):
-                //TO DO: - Добавить алерт с ошибкой
-                assertionFailure(error.localizedDescription)
-                ProgressHUD.dismiss()
-                return
-            }
-        }
-    }
-    
 }
 
 extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
@@ -100,6 +88,28 @@ extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
         cell.configure(imageURL: URL(string: urlString), text: "\(collection[indexPath.row].name) (\(collection[indexPath.row].nfts.count))"
         )
         return cell
+    }
+    
+}
+
+extension CatalogViewController: CatalogViewProtocol {
+    func showLoading() {
+        ProgressHUD.show()
+    }
+    
+    func hideLoading() {
+        ProgressHUD.dismiss()
+    }
+    
+    func updateCollections(_ collections: [CatalogCollection]) {
+        self.collection = collections
+        tableView.reloadData()
+    }
+    
+    func showError(_ message: String) {
+        let alert = UIAlertController(title: "Ошибка при загрузке данных", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
     
     

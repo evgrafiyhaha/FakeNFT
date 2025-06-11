@@ -11,7 +11,7 @@ struct CatalogRequest: NetworkRequest {
     var dto: (any Dto)?
     
     var endpoint: URL? {
-        URL(string: "https://d5dn3j2ouj72b0ejucbl.apigw.yandexcloud.net/api/v1/collections")
+        URL(string: RequestConstants.collectionURL)
     }
     
     var httpMethod: HttpMethod = .get
