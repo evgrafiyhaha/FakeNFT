@@ -9,6 +9,10 @@
 Ссылка на доску: https://github.com/users/evgrafiyhaha/projects/1/views/2
 
 
+Верстка кодом, архитектура MVP.
+
+
+
 
 # Декомпозиция эпика Каталог
 
