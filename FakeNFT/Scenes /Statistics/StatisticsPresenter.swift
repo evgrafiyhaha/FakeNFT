@@ -1,13 +1,18 @@
-//
-//  StatisticsPresenter.swift
-//  FakeNFT
-//
-//  Created by Николай Жирнов on 10.06.2025.
-//
-
 import Foundation
+import UIKit
 
 class StatisticsPresenter {
+    
+    let users = [
+        UserStatistics(name: "Alex", image: UIImage(resource: .mockImageUser), rating: 90),
+        UserStatistics(name: "Alex", image: UIImage(resource: .mockImageUser), rating: 90),
+        UserStatistics(name: "Alex", image: UIImage(resource: .mockImageUser), rating: 90),
+        UserStatistics(name: "Alex", image: UIImage(resource: .mockImageUser), rating: 90),
+        UserStatistics(name: "Alex", image: UIImage(resource: .mockImageUser), rating: 90),
+        UserStatistics(name: "Alex", image: UIImage(resource: .mockImageUser), rating: 90),
+        UserStatistics(name: "Alex", image: UIImage(resource: .mockImageUser), rating: 90),
+        UserStatistics(name: "Alex", image: UIImage(resource: .mockImageUser), rating: 90),
+    ]
     
     let service: ServicesAssembly
     
@@ -15,4 +20,11 @@ class StatisticsPresenter {
         self.service = service
     }
     
+}
+
+
+struct UserStatistics {
+    let name: String
+    let image: UIImage
+    let rating: Int
 }
