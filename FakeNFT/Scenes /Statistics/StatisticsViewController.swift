@@ -1,10 +1,13 @@
 import UIKit
+import ProgressHUD
 
 class StatisticsViewController: UIViewController {
     
     let presenter: StatisticsPresenter
     
-    lazy var UsersTableView: UITableView = {
+    // MARK: - UI components
+    
+    lazy private var usersTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(UsersTableViewCell.self, forCellReuseIdentifier: "UsersTableViewCell")
         tableView.separatorStyle = .none
@@ -15,7 +18,7 @@ class StatisticsViewController: UIViewController {
         return tableView
     }()
     
-    lazy var filterButton: UIButton = {
+    lazy private var filterButton: UIButton = {
         let button = UIButton.systemButton(
             with: UIImage(resource: .filterButton),
             target: nil,
@@ -30,11 +33,23 @@ class StatisticsViewController: UIViewController {
         return button
     }()
     
+    // MARK: - Init
+    
     init(presenter: StatisticsPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - LifeCycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        view.addSubview(UsersTableView)
+        view.addSubview(usersTableView)
         view.addSubview(filterButton)
         
         NSLayoutConstraint.activate([
@@ -42,41 +57,38 @@ class StatisticsViewController: UIViewController {
             
             filterButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 2),
             
-            UsersTableView.topAnchor.constraint(equalTo: filterButton.bottomAnchor, constant: 12),
-            UsersTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            UsersTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            UsersTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            usersTableView.topAnchor.constraint(equalTo: filterButton.bottomAnchor, constant: 12),
+            usersTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            usersTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            usersTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        
+        dataIsLoad()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+    // MARK: @objc functions
     
     @objc func filterButtonTapped() {
         
     }
 }
 
+// MARK: - UITableViewDataSource
+
 extension StatisticsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter.users.count
+        presenter.countOfUsers
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UsersTableViewCell", for: indexPath) as! UsersTableViewCell
-        let user = presenter.users[indexPath.row]
-        cell.numberLabel.text = String(indexPath.row)
-        cell.avatarImageView.image = user.image
-        cell.nameLabel.text = user.name
-        cell.ratingLabel.text = String(user.rating)
-        
-        cell.separatorInset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        presenter.configureCell(cell, at: indexPath)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard indexPath.row + 1 == presenter.countOfUsers else { return }
+        presenter.loadNextPage()
     }
 }
 
@@ -85,3 +97,35 @@ extension StatisticsViewController: UITableViewDelegate {
         96
     }
 }
+
+// MARK: - StatisticsViewControllerDelegate
+
+extension StatisticsViewController: StatisticsViewControllerDelegate {
+    func updateUsersTable() {
+        let oldCount = usersTableView.numberOfRows(inSection: 0)
+        let newCount = presenter.countOfUsers
+        usersTableView.performBatchUpdates() {
+            if oldCount < newCount {
+                let indexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0) }
+                usersTableView.insertRows(at: indexPaths, with: .automatic)
+            }
+        }
+    }
+    
+    func updateRowUsersTable(at indexPath: IndexPath) {
+        usersTableView.reloadRows(at: [indexPath], with: .automatic)
+    }
+    
+    func dataIsLoad() {
+        DispatchQueue.main.async {
+            ProgressHUD.show()
+        }
+    }
+
+    func dataDidLoaded() {
+        DispatchQueue.main.async {
+            ProgressHUD.dismiss()
+        }
+    }
+}
+

@@ -9,6 +9,8 @@ import UIKit
 
 class UsersTableViewCell: UITableViewCell {
     
+    // MARK: - UI components
+    
     lazy var UserBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemGray6
@@ -21,6 +23,8 @@ class UsersTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.caption1
         label.textColor = .label
+        label.lineBreakMode = .byTruncatingTail
+        label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             label.heightAnchor.constraint(equalToConstant: 80)
@@ -30,6 +34,7 @@ class UsersTableViewCell: UITableViewCell {
     
     lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.image = UIImage(resource: .mockImageUser)
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 14
@@ -48,12 +53,16 @@ class UsersTableViewCell: UITableViewCell {
         return label
     }()
     
-    lazy var ratingLabel: UILabel = {
+    lazy var countNFTsLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.headline3
+        label.setContentHuggingPriority(.required, for: .horizontal)
+            label.setContentCompressionResistancePriority(.required, for: .horizontal)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    // MARK: - Init
 
    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
        super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -63,26 +72,28 @@ class UsersTableViewCell: UITableViewCell {
        
        UserBackgroundView.addSubview(avatarImageView)
        UserBackgroundView.addSubview(nameLabel)
-       UserBackgroundView.addSubview(ratingLabel)
+       UserBackgroundView.addSubview(countNFTsLabel)
        
        NSLayoutConstraint.activate([
-        numberLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
+        numberLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+        numberLabel.widthAnchor.constraint(equalToConstant: 20),
         numberLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         
-        UserBackgroundView.leadingAnchor.constraint(equalTo: numberLabel.trailingAnchor, constant: 20),
+        UserBackgroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 50),
         UserBackgroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
         UserBackgroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
         UserBackgroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         
-        avatarImageView.topAnchor.constraint(equalTo: UserBackgroundView.topAnchor, constant: 26),
+        avatarImageView.centerYAnchor.constraint(equalTo: UserBackgroundView.centerYAnchor),
         avatarImageView.leadingAnchor.constraint(equalTo: UserBackgroundView.leadingAnchor, constant: 16),
         
-        nameLabel.topAnchor.constraint(equalTo: UserBackgroundView.topAnchor, constant: 26),
+        nameLabel.centerYAnchor.constraint(equalTo: UserBackgroundView.centerYAnchor),
         nameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 8),
+        nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: countNFTsLabel.leadingAnchor, constant: -8),
         
-        ratingLabel.trailingAnchor.constraint(equalTo: UserBackgroundView.trailingAnchor, constant: -16),
-        ratingLabel.topAnchor.constraint(equalTo: nameLabel.topAnchor),
-        ])
+        countNFTsLabel.trailingAnchor.constraint(equalTo: UserBackgroundView.trailingAnchor, constant: -16),
+        countNFTsLabel.centerYAnchor.constraint(equalTo: UserBackgroundView.centerYAnchor),
+       ])
        
        selectionStyle = .none
     }
