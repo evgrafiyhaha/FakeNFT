@@ -7,8 +7,4 @@ struct UserStatistics: Decodable {
     let description: String?
     let website: String
     let nfts: [String]
-    
-    private enum CodingKeys: String, CodingKey {
-        case id, name, avatar, description, website, nfts
-    }
 }

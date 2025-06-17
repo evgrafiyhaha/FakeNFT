@@ -1,7 +1,7 @@
 import Foundation
 
 protocol UsersStatisticsStorage: AnyObject {
-    func getAllUser() -> [UserStatistics]
+    func getAllUsers() -> [UserStatistics]
     func saveUser(_ users: [UserStatistics])
     func getUserByIndex(_ index: Int) -> UserStatistics?
 }
@@ -11,7 +11,7 @@ final class UsersStatisticsStorageImpl: UsersStatisticsStorage {
 
     private let syncQueue = DispatchQueue(label: "sync-userStatistics-queue")
     
-    func getAllUser() -> [UserStatistics] {
+    func getAllUsers() -> [UserStatistics] {
         syncQueue.sync {
             storage
         }
@@ -19,7 +19,7 @@ final class UsersStatisticsStorageImpl: UsersStatisticsStorage {
     
     func saveUser(_ users: [UserStatistics]) {
         syncQueue.async { [weak self] in
-            users.forEach { self?.storage.append($0) }
+            self?.storage.append(contentsOf: users)
         }
     }
     

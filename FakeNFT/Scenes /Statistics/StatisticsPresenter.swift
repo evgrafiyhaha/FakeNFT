@@ -1,14 +1,14 @@
 import UIKit
 import Kingfisher
 
-class StatisticsPresenter {
+final class StatisticsPresenter {
     
-    private var userStatisticsServiceServiceObserver: NSObjectProtocol?
+    private var userStatisticsServiceObserver: NSObjectProtocol?
     
     weak var delegate: StatisticsViewControllerDelegate?
     
     var countOfUsers: Int {
-        return service.usersStatisticsService.storage.getAllUser().count
+        service.usersStatisticsService.storage.getAllUsers().count
     }
      
     let service: ServicesAssembly
@@ -16,15 +16,18 @@ class StatisticsPresenter {
     init(service: ServicesAssembly) {
         self.service = service
         
-        service.usersStatisticsService.fetchUsersNextPage()
-        
-        userStatisticsServiceServiceObserver = NotificationCenter.default.addObserver(
+        userStatisticsServiceObserver = NotificationCenter.default.addObserver(
             forName: UserStatisticsServiceImpl.didChangeNotification,
             object: nil, queue: .main)
         { [weak self] _ in
             self?.delegate?.dataDidLoaded()
             self?.delegate?.updateUsersTable()
         }
+    }
+    
+    func loadData() {
+        delegate?.dataIsLoad()
+        service.usersStatisticsService.fetchUsersNextPage()
     }
     
     func getUserByIndex(_ index: Int) -> UserStatistics? {

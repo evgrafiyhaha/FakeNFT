@@ -1,13 +1,13 @@
 import UIKit
 import ProgressHUD
 
-class StatisticsViewController: UIViewController {
+final class StatisticsViewController: UIViewController {
     
     let presenter: StatisticsPresenter
     
     // MARK: - UI components
     
-    lazy private var usersTableView: UITableView = {
+    private lazy var usersTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(UsersTableViewCell.self, forCellReuseIdentifier: "UsersTableViewCell")
         tableView.separatorStyle = .none
@@ -18,7 +18,7 @@ class StatisticsViewController: UIViewController {
         return tableView
     }()
     
-    lazy private var filterButton: UIButton = {
+    private lazy var filterButton: UIButton = {
         let button = UIButton.systemButton(
             with: UIImage(resource: .filterButton),
             target: nil,
@@ -63,7 +63,7 @@ class StatisticsViewController: UIViewController {
             usersTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
-        dataIsLoad()
+        presenter.loadData()
     }
     
     // MARK: @objc functions
@@ -81,7 +81,10 @@ extension StatisticsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "UsersTableViewCell", for: indexPath) as! UsersTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "UsersTableViewCell", for: indexPath) as? UsersTableViewCell
+        guard let cell else {
+            fatalError("Could not dequeue cell with identifier: UsersTableViewCell")
+        }
         presenter.configureCell(cell, at: indexPath)
         return cell
     }

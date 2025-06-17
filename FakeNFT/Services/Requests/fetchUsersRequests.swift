@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct fetchUsersRequest: NetworkRequest {
+struct FetchUsersRequest: NetworkRequest {
     let page: String
     let size: String
     var endpoint: URL? {

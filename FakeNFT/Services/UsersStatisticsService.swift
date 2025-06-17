@@ -22,7 +22,7 @@ final class UserStatisticsServiceImpl: UsersStatisticsService  {
     }
     
     func fetchUsersNextPage() {
-        let request = fetchUsersRequest(page: String(currentPage), size: String(15))
+        let request = FetchUsersRequest(page: String(currentPage), size: String(15))
         networkClient.send(request: request, type: [UserStatistics].self) { [weak storage, weak self] result in
             switch result {
             case .failure(let error):
