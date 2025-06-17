@@ -23,7 +23,9 @@ final class TabBarController: UITabBarController {
             servicesAssembly: servicesAssembly
         )
         
-        let statisticsController = StatisticsViewController(presenter: StatisticsPresenter(service:     servicesAssembly))
+        let statisticsPresenter = StatisticsPresenter(service: servicesAssembly)
+        let statisticsController = StatisticsViewController(presenter: statisticsPresenter)
+        statisticsPresenter.delegate = statisticsController
         
         catalogController.tabBarItem = catalogTabBarItem
         statisticsController.tabBarItem = statisticsTabBarItem
