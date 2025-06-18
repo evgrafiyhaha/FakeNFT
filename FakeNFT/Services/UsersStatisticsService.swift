@@ -3,6 +3,9 @@ import Foundation
 typealias UserStatisticsCompletion = (Result<[UserStatistics], Error>) -> Void
 
 protocol UsersStatisticsService {
+    var currentPage: Int { get set}
+    var sortParameter: SortType? { get set }
+    
     var storage: UsersStatisticsStorage { get }
     func fetchUsersNextPage()
 }
@@ -11,7 +14,9 @@ final class UserStatisticsServiceImpl: UsersStatisticsService  {
     
     var storage: UsersStatisticsStorage
     
-    private var currentPage: Int = 0
+    var currentPage: Int = 0
+    var sortParameter: SortType? = nil
+    
     private let networkClient: NetworkClient
     
     static let didChangeNotification = Notification.Name("UsersStatisticsServiceServiceDidChange")
@@ -22,7 +27,7 @@ final class UserStatisticsServiceImpl: UsersStatisticsService  {
     }
     
     func fetchUsersNextPage() {
-        let request = FetchUsersRequest(page: String(currentPage), size: String(15))
+        let request = FetchUsersRequest(page: String(currentPage), size: String(15), sortBy: sortParameter)
         networkClient.send(request: request, type: [UserStatistics].self) { [weak storage, weak self] result in
             switch result {
             case .failure(let error):

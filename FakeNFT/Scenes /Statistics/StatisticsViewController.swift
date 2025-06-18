@@ -22,7 +22,7 @@ final class StatisticsViewController: UIViewController {
         let button = UIButton.systemButton(
             with: UIImage(resource: .filterButton),
             target: nil,
-            action: #selector(filterButtonTapped)
+            action: #selector(showSortAlert)
         )
         button.tintColor = .black
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -71,6 +71,30 @@ final class StatisticsViewController: UIViewController {
     @objc func filterButtonTapped() {
         
     }
+    
+    @objc func showSortAlert() {
+        let alert = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
+        
+        let sortByNameAction = UIAlertAction(title: "По имени", style: .default) { [weak self] _ in
+            print("Сортировка по имени")
+            let sortParameter = SortType.name
+            self?.presenter.filterUsers(by: sortParameter)
+        }
+        
+        let sortByRatingAction = UIAlertAction(title: "По рейтингу", style: .default) { [weak self] _ in
+            print("Сортировка по рейтингу")
+            let sortParameter = SortType.rating
+            self?.presenter.filterUsers(by: sortParameter)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+        
+        alert.addAction(sortByNameAction)
+        alert.addAction(sortByRatingAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -117,6 +141,10 @@ extension StatisticsViewController: StatisticsViewControllerDelegate {
     
     func updateRowUsersTable(at indexPath: IndexPath) {
         usersTableView.reloadRows(at: [indexPath], with: .automatic)
+    }
+    
+    func updateFullUsersTable() {
+        usersTableView.reloadData()
     }
     
     func dataIsLoad() {

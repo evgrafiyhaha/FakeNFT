@@ -38,6 +38,14 @@ final class StatisticsPresenter {
         service.usersStatisticsService.fetchUsersNextPage()
     }
     
+    func filterUsers(by parameter: SortType) {
+        service.usersStatisticsService.storage.removeData()
+        service.usersStatisticsService.currentPage = 0
+        service.usersStatisticsService.sortParameter = parameter
+        delegate?.updateFullUsersTable()
+        loadData()
+    }
+    
     @MainActor
     func configureCell(_ cell: UsersTableViewCell, at indexPath: IndexPath) {
         let user = getUserByIndex(indexPath.row)
@@ -55,4 +63,9 @@ final class StatisticsPresenter {
         }
         cell.separatorInset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
     }
+}
+
+enum SortType: String {
+    case name = "name"
+    case rating = "rating"
 }
