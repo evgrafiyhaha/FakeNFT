@@ -34,6 +34,7 @@ class CatalogCollectionCell: UICollectionViewCell {
     private lazy var nameLabel: UILabel = {
        let label = UILabel()
         label.font = .systemFont(ofSize: 17, weight: .bold)
+        label.numberOfLines = 0
         return label
     }()
     
@@ -47,16 +48,8 @@ class CatalogCollectionCell: UICollectionViewCell {
     
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
+        label.font = .systemFont(ofSize: 10, weight: .medium)
         return label
-    }()
-    
-    private lazy var horizontalStackView: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [nameLabel, ratingStackView, priceLabel])
-        stack.axis = .horizontal
-        stack.alignment = .center
-        stack.spacing = 4
-        stack.distribution = .equalSpacing
-        return stack
     }()
     
     private lazy var indicator: UIActivityIndicatorView = {
@@ -76,7 +69,7 @@ class CatalogCollectionCell: UICollectionViewCell {
     
     private func setupUI(){
         
-        [image, likeButton, cartButton,horizontalStackView].forEach {
+        [image, likeButton, cartButton, ratingStackView, priceLabel, indicator, nameLabel].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
@@ -87,20 +80,33 @@ class CatalogCollectionCell: UICollectionViewCell {
             image.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             image.heightAnchor.constraint(equalToConstant: 108),
             
+            ratingStackView.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 8),
+            ratingStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            ratingStackView.heightAnchor.constraint(equalToConstant: 12),
+            ratingStackView.widthAnchor.constraint(equalToConstant: 68),
+            
+            nameLabel.topAnchor.constraint(equalTo: ratingStackView.bottomAnchor, constant: 5),
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            nameLabel.heightAnchor.constraint(equalToConstant: 22),
+            nameLabel.trailingAnchor.constraint(equalTo: cartButton.trailingAnchor),
+            
+            priceLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4),
+            priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            priceLabel.heightAnchor.constraint(equalToConstant: 12),
+            priceLabel.trailingAnchor.constraint(equalTo: cartButton.trailingAnchor),
+            
             likeButton.topAnchor.constraint(equalTo: contentView.topAnchor),
             likeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             likeButton.heightAnchor.constraint(equalToConstant: 42),
             likeButton.widthAnchor.constraint(equalToConstant: 42),
             
-            horizontalStackView.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 8),
-            horizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            horizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            horizontalStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            
-            cartButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            cartButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 20),
             cartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             cartButton.heightAnchor.constraint(equalToConstant: 40),
-            cartButton.widthAnchor.constraint(equalToConstant: 40)
+            cartButton.widthAnchor.constraint(equalToConstant: 40),
+            
+            indicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            indicator.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
         
     }
