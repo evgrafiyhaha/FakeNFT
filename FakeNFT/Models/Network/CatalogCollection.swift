@@ -12,4 +12,5 @@ struct CatalogCollection: Decodable {
     let cover: String
     let name: String
     let nfts: [String]
+    let description: String
 }

@@ -20,6 +20,7 @@ class CatalogViewController: UIViewController {
     
     private var collection: [CatalogCollection] = []
     private var presenter: CatalogPresenterProtocol!
+    private let servicesAssembly: ServicesAssembly
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -37,10 +38,11 @@ class CatalogViewController: UIViewController {
     }()
     
     init(serviceAssembly: ServicesAssembly) {
+        self.servicesAssembly = serviceAssembly
         super.init(nibName: nil, bundle: nil)
         self.presenter = CatalogPresenter(view: self, networkService: serviceAssembly.catalogNetworkClient)
-
     }
+
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -88,6 +90,12 @@ extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
         cell.configure(imageURL: URL(string: urlString), text: "\(collection[indexPath.row].name) (\(collection[indexPath.row].nfts.count))"
         )
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = CatalogCollectionVC(catalogCollection: collection[indexPath.row], servicesAssembly: servicesAssembly)
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
     }
     
 }
