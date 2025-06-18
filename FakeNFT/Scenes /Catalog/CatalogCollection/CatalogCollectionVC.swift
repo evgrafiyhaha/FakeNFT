@@ -61,6 +61,21 @@ final class CatalogCollectionVC: UIViewController {
         return label
     }()
     
+    private lazy var authorNameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 15, weight: .regular)
+        label.textColor = .systemBlue
+        return label
+    }()
+    
+    private lazy var authorStackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [authorLabel, authorNameLabel])
+        stack.axis = .horizontal
+        stack.spacing = 4
+        stack.alignment = .center
+        return stack
+    }()
+    
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13, weight: .regular)
@@ -96,6 +111,7 @@ final class CatalogCollectionVC: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         setupUI()
+        authorNameLabel.text = catalogCollection.author
     }
     
     @objc private func backButtonDidTap(){
@@ -122,7 +138,7 @@ final class CatalogCollectionVC: UIViewController {
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
         
-        [collectionView, imageView, collectionLabel, authorLabel, descriptionLabel].forEach {
+        [collectionView, imageView, collectionLabel, descriptionLabel, authorStackView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
@@ -147,12 +163,11 @@ final class CatalogCollectionVC: UIViewController {
             collectionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             collectionLabel.heightAnchor.constraint(equalToConstant: 28),
             
-            authorLabel.topAnchor.constraint(equalTo: collectionLabel.bottomAnchor, constant: 8),
-            authorLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            authorLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            authorLabel.heightAnchor.constraint(equalToConstant: 28),
+            authorStackView.topAnchor.constraint(equalTo: collectionLabel.bottomAnchor, constant: 8),
+            authorStackView.heightAnchor.constraint(equalToConstant: 28),
+            authorStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             
-            descriptionLabel.topAnchor.constraint(equalTo: authorLabel.bottomAnchor),
+            descriptionLabel.topAnchor.constraint(equalTo: authorStackView.bottomAnchor),
             descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             
@@ -165,25 +180,26 @@ final class CatalogCollectionVC: UIViewController {
         let itemsCount = catalogCollection.nfts.count
         let rows = Int(ceil(Double(itemsCount) / 3.0))
         let height = CGFloat(rows) * 192 + CGFloat(rows - 1) * 8
-
+        
         collectionView.heightAnchor.constraint(equalToConstant: height).isActive = true
-
-
+        
+        
     }
     
     private func configureCell(cell: CatalogCollectionCell, indexPath: IndexPath) {
         cell.startAnimation()
         servicesAssembly.nftService.loadNft(id: catalogCollection.nfts[indexPath.row]) { (result: Result<Nft, Error>) in
-            switch result {
-            case .success(let nft):
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let nft):
                     cell.configure(nft: nft)
+                case .failure(let error):
+                    print(error.localizedDescription)
                 }
-            case .failure(let error):
-                print(error.localizedDescription)
+                cell.stopAnimation()
             }
         }
-        cell.stopAnimation()
+        
     }
 }
 
@@ -207,7 +223,7 @@ extension CatalogCollectionVC: UICollectionViewDelegate, UICollectionViewDataSou
         let cellWidth = floor(availableWidth / itemsPerRow)
         return CGSize(width: cellWidth, height: 192)
     }
-
+    
     
     
 }

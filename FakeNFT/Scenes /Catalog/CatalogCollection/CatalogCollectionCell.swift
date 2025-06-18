@@ -89,7 +89,7 @@ class CatalogCollectionCell: UICollectionViewCell {
             nameLabel.topAnchor.constraint(equalTo: ratingStackView.bottomAnchor, constant: 5),
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             nameLabel.heightAnchor.constraint(equalToConstant: 22),
-            nameLabel.trailingAnchor.constraint(equalTo: cartButton.trailingAnchor),
+            nameLabel.trailingAnchor.constraint(equalTo: cartButton.leadingAnchor, constant: -8),
             
             priceLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4),
             priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
