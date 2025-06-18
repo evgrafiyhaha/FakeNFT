@@ -34,7 +34,6 @@ class CatalogCollectionCell: UICollectionViewCell {
     private lazy var nameLabel: UILabel = {
        let label = UILabel()
         label.font = .systemFont(ofSize: 17, weight: .bold)
-        label.numberOfLines = 0
         return label
     }()
     
@@ -42,7 +41,7 @@ class CatalogCollectionCell: UICollectionViewCell {
        let stack = UIStackView()
         stack.axis = .horizontal
         stack.spacing = 2
-        stack.alignment = .center
+        stack.alignment = .leading
         return stack
     }()
     
@@ -69,12 +68,14 @@ class CatalogCollectionCell: UICollectionViewCell {
     
     private func setupUI(){
         
-        [image, likeButton, cartButton, ratingStackView, priceLabel, indicator, nameLabel].forEach {
+        [nameLabel, image, likeButton, ratingStackView, priceLabel, indicator, cartButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
+
         
         NSLayoutConstraint.activate([
+            
             image.topAnchor.constraint(equalTo: contentView.topAnchor),
             image.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             image.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -100,10 +101,10 @@ class CatalogCollectionCell: UICollectionViewCell {
             likeButton.heightAnchor.constraint(equalToConstant: 42),
             likeButton.widthAnchor.constraint(equalToConstant: 42),
             
-            cartButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 20),
-            cartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            cartButton.heightAnchor.constraint(equalToConstant: 40),
-            cartButton.widthAnchor.constraint(equalToConstant: 40),
+            cartButton.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 24),
+              cartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+              cartButton.widthAnchor.constraint(equalToConstant: 40),
+              cartButton.heightAnchor.constraint(equalToConstant: 40),
             
             indicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             indicator.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)

@@ -17,6 +17,18 @@ final class CatalogCollectionVC: UIViewController {
     
     private var collection: [CatalogCollection] = []
     
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    private lazy var contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private lazy var backButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "backButton"), for: .normal)
@@ -25,7 +37,7 @@ final class CatalogCollectionVC: UIViewController {
     }()
     
     private lazy var imageView: UIImageView = {
-       let image = UIImageView()
+        let image = UIImageView()
         image.layer.cornerRadius = 12
         image.clipsToBounds = true
         guard let imageURL = catalogCollection.cover.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
@@ -35,7 +47,7 @@ final class CatalogCollectionVC: UIViewController {
     }()
     
     private lazy var collectionLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = .systemFont(ofSize: 22, weight: .bold)
         label.text = catalogCollection.name
         label.numberOfLines = 0
@@ -43,7 +55,7 @@ final class CatalogCollectionVC: UIViewController {
     }()
     
     private lazy var authorLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = .systemFont(ofSize: 13, weight: .regular)
         label.text = "Автор коллекции:"
         return label
@@ -86,48 +98,77 @@ final class CatalogCollectionVC: UIViewController {
         setupUI()
     }
     
-     @objc private func backButtonDidTap(){
+    @objc private func backButtonDidTap(){
         dismiss(animated: true)
     }
     
     private func setupUI() {
-        [collectionView, imageView, backButton, collectionLabel, authorLabel, descriptionLabel].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            self.view.addSubview($0)
-        }
+        
+        self.view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        
         
         NSLayoutConstraint.activate([
-            backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
+        
+        [collectionView, imageView, collectionLabel, authorLabel, descriptionLabel].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview($0)
+        }
+        
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(backButton)
+        
+        NSLayoutConstraint.activate([
+            
+            backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             backButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 9),
             backButton.heightAnchor.constraint(equalToConstant: 24),
             backButton.widthAnchor.constraint(equalToConstant: 24),
             
-            imageView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            imageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            imageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             imageView.heightAnchor.constraint(equalToConstant: 310),
             
             collectionLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 16),
-            collectionLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
-            collectionLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
+            collectionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            collectionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             collectionLabel.heightAnchor.constraint(equalToConstant: 28),
             
             authorLabel.topAnchor.constraint(equalTo: collectionLabel.bottomAnchor, constant: 8),
-            authorLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
-            authorLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
+            authorLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            authorLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             authorLabel.heightAnchor.constraint(equalToConstant: 28),
             
             descriptionLabel.topAnchor.constraint(equalTo: authorLabel.bottomAnchor),
-            descriptionLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
-            descriptionLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
+            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             
             collectionView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 24),
-            collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
-            collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            
+            collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
+        
+        let itemsCount = catalogCollection.nfts.count
+        let rows = Int(ceil(Double(itemsCount) / 3.0))
+        let height = CGFloat(rows) * 192 + CGFloat(rows - 1) * 8
+
+        collectionView.heightAnchor.constraint(equalToConstant: height).isActive = true
+
+
     }
     
     private func configureCell(cell: CatalogCollectionCell, indexPath: IndexPath) {
@@ -159,10 +200,14 @@ extension CatalogCollectionVC: UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.frame.width - 28
-        let cellWidth = width/3
+        let spacing: CGFloat = 10
+        let itemsPerRow: CGFloat = 3
+        let totalSpacing = spacing * (itemsPerRow - 1)
+        let availableWidth = collectionView.frame.width - totalSpacing
+        let cellWidth = floor(availableWidth / itemsPerRow)
         return CGSize(width: cellWidth, height: 192)
     }
+
     
     
 }
