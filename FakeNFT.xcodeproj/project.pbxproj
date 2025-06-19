@@ -43,6 +43,8 @@
 		3FC8C39129D2453B0081F015 /* ExamplePutRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C39029D2453B0081F015 /* ExamplePutRequest.swift */; };
 		3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */; };
 		558E39E72C68CE0A00FB86AC /* NftService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558E39E62C68CE0900FB86AC /* NftService.swift */; };
+		CE13EC0E2E0449F100351AE6 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE13EC0D2E0449F100351AE6 /* WebViewController.swift */; };
+		CE13EC102E0458AA00351AE6 /* CatalogCollectionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE13EC0F2E0458AA00351AE6 /* CatalogCollectionPresenter.swift */; };
 		CE3C02B32E018B7F00A12C9B /* CatalogCollectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3C02B22E018B7F00A12C9B /* CatalogCollectionVC.swift */; };
 		CE3C02B52E018DD800A12C9B /* CatalogCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3C02B42E018DD800A12C9B /* CatalogCollectionCell.swift */; };
 		CE5380DB2DF8504F008AB48A /* CatalogCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5380DA2DF8504F008AB48A /* CatalogCell.swift */; };
@@ -111,6 +113,8 @@
 		3FC8C39029D2453B0081F015 /* ExamplePutRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamplePutRequest.swift; sourceTree = "<group>"; };
 		3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatters+Presets.swift"; sourceTree = "<group>"; };
 		558E39E62C68CE0900FB86AC /* NftService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftService.swift; sourceTree = "<group>"; };
+		CE13EC0D2E0449F100351AE6 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		CE13EC0F2E0458AA00351AE6 /* CatalogCollectionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogCollectionPresenter.swift; sourceTree = "<group>"; };
 		CE3C02B22E018B7F00A12C9B /* CatalogCollectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogCollectionVC.swift; sourceTree = "<group>"; };
 		CE3C02B42E018DD800A12C9B /* CatalogCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogCollectionCell.swift; sourceTree = "<group>"; };
 		CE5380DA2DF8504F008AB48A /* CatalogCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogCell.swift; sourceTree = "<group>"; };
@@ -358,6 +362,8 @@
 			children = (
 				CE3C02B22E018B7F00A12C9B /* CatalogCollectionVC.swift */,
 				CE3C02B42E018DD800A12C9B /* CatalogCollectionCell.swift */,
+				CE13EC0D2E0449F100351AE6 /* WebViewController.swift */,
+				CE13EC0F2E0458AA00351AE6 /* CatalogCollectionPresenter.swift */,
 			);
 			path = CatalogCollection;
 			sourceTree = "<group>";
@@ -535,6 +541,7 @@
 				3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */,
 				0C79EE662A76DDFF00EE90EA /* NftDetailViewController.swift in Sources */,
 				E1A1B9DA2AA01CE400C3AFBC /* TabBarController.swift in Sources */,
+				CE13EC102E0458AA00351AE6 /* CatalogCollectionPresenter.swift in Sources */,
 				3F478ED129DB476500F6D39E /* Fonts.swift in Sources */,
 				0C79EE6A2A76DE1000EE90EA /* NftDetailAssembly.swift in Sources */,
 				CE3C02B32E018B7F00A12C9B /* CatalogCollectionVC.swift in Sources */,
@@ -568,6 +575,7 @@
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,
 				CE5380E32DF85F3A008AB48A /* CatalogRequest.swift in Sources */,
 				0CFCB7442A7802440009A829 /* NftDetailInput.swift in Sources */,
+				CE13EC0E2E0449F100351AE6 /* WebViewController.swift in Sources */,
 				0C79EE632A76DD1900EE90EA /* RequestConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

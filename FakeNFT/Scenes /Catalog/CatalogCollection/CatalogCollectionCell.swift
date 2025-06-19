@@ -13,14 +13,14 @@ class CatalogCollectionCell: UICollectionViewCell {
     static let reuseIdentifier = "catalogCollectionCellIdentifier"
     
     private lazy var image: UIImageView = {
-       let image = UIImageView()
+        let image = UIImageView()
         image.layer.cornerRadius = 12
         image.clipsToBounds = true
         return image
     }()
     
     private lazy var likeButton: UIButton = {
-       let button = UIButton()
+        let button = UIButton()
         button.setImage(UIImage(named: "likeButton_on"), for: .normal)
         return button
     }()
@@ -32,13 +32,13 @@ class CatalogCollectionCell: UICollectionViewCell {
     }()
     
     private lazy var nameLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = .systemFont(ofSize: 17, weight: .bold)
         return label
     }()
     
     private lazy var ratingStackView: UIStackView = {
-       let stack = UIStackView()
+        let stack = UIStackView()
         stack.axis = .horizontal
         stack.spacing = 2
         stack.alignment = .leading
@@ -52,11 +52,11 @@ class CatalogCollectionCell: UICollectionViewCell {
     }()
     
     private lazy var indicator: UIActivityIndicatorView = {
-          let indicator = UIActivityIndicatorView()
-          indicator.hidesWhenStopped = true
-          return indicator
-      }()
-
+        let indicator = UIActivityIndicatorView()
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -72,7 +72,7 @@ class CatalogCollectionCell: UICollectionViewCell {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
-
+        
         
         NSLayoutConstraint.activate([
             
@@ -102,9 +102,9 @@ class CatalogCollectionCell: UICollectionViewCell {
             likeButton.widthAnchor.constraint(equalToConstant: 42),
             
             cartButton.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 24),
-              cartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-              cartButton.widthAnchor.constraint(equalToConstant: 40),
-              cartButton.heightAnchor.constraint(equalToConstant: 40),
+            cartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            cartButton.widthAnchor.constraint(equalToConstant: 40),
+            cartButton.heightAnchor.constraint(equalToConstant: 40),
             
             indicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             indicator.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
@@ -144,5 +144,5 @@ class CatalogCollectionCell: UICollectionViewCell {
     func stopAnimation() {
         indicator.stopAnimating()
     }
-
+    
 }

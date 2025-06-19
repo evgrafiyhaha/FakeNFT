@@ -10,12 +10,19 @@ import UIKit
 import Kingfisher
 import ProgressHUD
 
+protocol CatalogCollectionViewProtocol: AnyObject {
+    func showAuthor(name: String)
+    func showDescription(_ description: String)
+    func showCover(url: URL)
+    func showNftsCount(_ count: Int)
+    func showError(_ message: String)
+    func reloadCollectionView()
+    func showTitle(_ title: String)
+}
+
 final class CatalogCollectionVC: UIViewController {
     
-    private let catalogCollection: CatalogCollection
-    private let servicesAssembly: ServicesAssembly
-    
-    private var collection: [CatalogCollection] = []
+    private var presenter: CatalogCollectionPresenterProtocol!
     
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -40,16 +47,12 @@ final class CatalogCollectionVC: UIViewController {
         let image = UIImageView()
         image.layer.cornerRadius = 12
         image.clipsToBounds = true
-        guard let imageURL = catalogCollection.cover.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let url = URL(string: imageURL) else {return image}
-        image.kf.setImage(with: url)
         return image
     }()
     
     private lazy var collectionLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 22, weight: .bold)
-        label.text = catalogCollection.name
         label.numberOfLines = 0
         return label
     }()
@@ -79,7 +82,6 @@ final class CatalogCollectionVC: UIViewController {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13, weight: .regular)
-        label.text = catalogCollection.description
         label.numberOfLines = 0
         return label
     }()
@@ -98,9 +100,12 @@ final class CatalogCollectionVC: UIViewController {
     }()
     
     init(catalogCollection: CatalogCollection, servicesAssembly: ServicesAssembly) {
-        self.catalogCollection = catalogCollection
-        self.servicesAssembly = servicesAssembly
         super.init(nibName: nil, bundle: nil)
+        self.presenter = CatalogCollectionPresenter(
+            view: self,
+            catalogCollection: catalogCollection,
+            nftService: servicesAssembly.nftService
+        )
     }
     
     required init?(coder: NSCoder) {
@@ -111,11 +116,15 @@ final class CatalogCollectionVC: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         setupUI()
-        authorNameLabel.text = catalogCollection.author
+        presenter.viewDidLoad()
     }
     
     @objc private func backButtonDidTap(){
         dismiss(animated: true)
+    }
+    
+    @objc private func authorLabelDidTap() {
+        presenter.didTapAuthor()
     }
     
     private func setupUI() {
@@ -177,41 +186,19 @@ final class CatalogCollectionVC: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
         
-        let itemsCount = catalogCollection.nfts.count
-        let rows = Int(ceil(Double(itemsCount) / 3.0))
-        let height = CGFloat(rows) * 192 + CGFloat(rows - 1) * 8
-        
-        collectionView.heightAnchor.constraint(equalToConstant: height).isActive = true
-        
-        
     }
     
-    private func configureCell(cell: CatalogCollectionCell, indexPath: IndexPath) {
-        cell.startAnimation()
-        servicesAssembly.nftService.loadNft(id: catalogCollection.nfts[indexPath.row]) { (result: Result<Nft, Error>) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let nft):
-                    cell.configure(nft: nft)
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-                cell.stopAnimation()
-            }
-        }
-        
-    }
 }
 
 extension CatalogCollectionVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        catalogCollection.nfts.count
+        presenter.numberOfItems
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CatalogCollectionCell.reuseIdentifier, for: indexPath) as? CatalogCollectionCell else {return UICollectionViewCell()}
         
-        configureCell(cell: cell, indexPath: indexPath)
+        presenter.configure(cell: cell, at: indexPath.row)
         return cell
     }
     
@@ -224,6 +211,40 @@ extension CatalogCollectionVC: UICollectionViewDelegate, UICollectionViewDataSou
         return CGSize(width: cellWidth, height: 192)
     }
     
+}
+
+extension CatalogCollectionVC: CatalogCollectionViewProtocol {
+    func showAuthor(name: String) {
+        authorNameLabel.text = name
+        authorNameLabel.isUserInteractionEnabled = true
+        authorNameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(authorLabelDidTap)))
+    }
+    
+    func showDescription(_ description: String) {
+        descriptionLabel.text = description
+    }
+    
+    func showCover(url: URL) {
+        imageView.kf.setImage(with: url)
+    }
+    
+    func showNftsCount(_ count: Int) {
+        let rows = Int(ceil(Double(count) / 3.0))
+        let height = CGFloat(rows) * 192 + CGFloat(rows - 1) * 8
+        collectionView.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    func showError(_ message: String) {
+        print("Error: \(message)")
+    }
+    
+    func reloadCollectionView() {
+        collectionView.reloadData()
+    }
+    
+    func showTitle(_ title: String) {
+        collectionLabel.text = title
+    }
     
     
 }

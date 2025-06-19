@@ -42,7 +42,7 @@ class CatalogViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         self.presenter = CatalogPresenter(view: self, networkService: serviceAssembly.catalogNetworkClient)
     }
-
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

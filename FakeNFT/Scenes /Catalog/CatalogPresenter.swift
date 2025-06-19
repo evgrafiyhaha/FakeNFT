@@ -26,17 +26,17 @@ final class CatalogPresenter: CatalogPresenterProtocol {
     }
     
     private func fetchCollections() {
-           view?.showLoading()
-           let request = CatalogRequest()
-           networkService.send(request: request, type: [CatalogCollection].self) { [weak self] result in
-               guard let self else { return }
-               self.view?.hideLoading()
-               switch result {
-               case .success(let collections):
-                   self.view?.updateCollections(collections)
-               case .failure(let error):
-                   self.view?.showError(error.localizedDescription)
-               }
-           }
-       }
+        view?.showLoading()
+        let request = CatalogRequest()
+        networkService.send(request: request, type: [CatalogCollection].self) { [weak self] result in
+            guard let self else { return }
+            self.view?.hideLoading()
+            switch result {
+            case .success(let collections):
+                self.view?.updateCollections(collections)
+            case .failure(let error):
+                self.view?.showError(error.localizedDescription)
+            }
+        }
+    }
 }

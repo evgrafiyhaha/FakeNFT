@@ -10,10 +10,10 @@ import UIKit
 import Kingfisher
 
 final class CatalogCell: UITableViewCell {
-     static let reuseIdentifier = "CatalogCell"
+    static let reuseIdentifier = "CatalogCell"
     
     private lazy var label: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = .systemFont(ofSize: 17, weight: .bold)
         label.numberOfLines = 1
         label.textColor = .black
@@ -21,7 +21,7 @@ final class CatalogCell: UITableViewCell {
     }()
     
     private lazy var image: UIImageView = {
-       let imageView = UIImageView()
+        let imageView = UIImageView()
         imageView.layer.cornerRadius = 12
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
