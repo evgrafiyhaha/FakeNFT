@@ -1,13 +1,6 @@
-//
-//  UsersTableViewCell.swift
-//  FakeNFT
-//
-//  Created by Николай Жирнов on 10.06.2025.
-//
-
 import UIKit
 
-class UsersTableViewCell: UITableViewCell {
+final class UsersTableViewCell: UITableViewCell {
     
     // MARK: - UI components
     

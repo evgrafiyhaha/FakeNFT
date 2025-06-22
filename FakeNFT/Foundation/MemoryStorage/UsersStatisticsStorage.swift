@@ -3,7 +3,7 @@ import Foundation
 protocol UsersStatisticsStorage: AnyObject {
     func getAllUsers() -> [UserStatistics]
     func saveUser(_ users: [UserStatistics])
-    func getUserByIndex(_ index: Int) -> UserStatistics?
+    func getUserByIndex(_ index: Int) -> UserStatistics
     func removeData()
 }
 
@@ -24,7 +24,7 @@ final class UsersStatisticsStorageImpl: UsersStatisticsStorage {
         }
     }
     
-    func getUserByIndex(_ index: Int) -> UserStatistics? {
+    func getUserByIndex(_ index: Int) -> UserStatistics {
         storage[index]
     }
     

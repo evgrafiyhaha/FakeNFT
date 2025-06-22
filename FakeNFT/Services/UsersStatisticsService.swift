@@ -42,4 +42,8 @@ final class UserStatisticsServiceImpl: UsersStatisticsService  {
             }
         }
     }
+    
+    func getUserByIndex(_ index: Int) -> UserStatistics? {
+        return storage.getUserByIndex(index)
+    }
 }

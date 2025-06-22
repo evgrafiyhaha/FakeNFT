@@ -27,10 +27,12 @@ final class TabBarController: UITabBarController {
         let statisticsController = StatisticsViewController(presenter: statisticsPresenter)
         statisticsPresenter.delegate = statisticsController
         
+        let nc = UINavigationController(rootViewController: statisticsController)
+        
         catalogController.tabBarItem = catalogTabBarItem
-        statisticsController.tabBarItem = statisticsTabBarItem
+        nc.tabBarItem = statisticsTabBarItem
 
-        viewControllers = [catalogController, statisticsController]
+        viewControllers = [catalogController, nc]
 
         view.backgroundColor = .systemBackground
     }

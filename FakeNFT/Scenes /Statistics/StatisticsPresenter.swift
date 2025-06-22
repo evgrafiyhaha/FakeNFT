@@ -3,15 +3,17 @@ import Kingfisher
 
 final class StatisticsPresenter {
     
-    private var userStatisticsServiceObserver: NSObjectProtocol?
-    
     weak var delegate: StatisticsViewControllerDelegate?
+     
+    let service: ServicesAssembly
     
     var countOfUsers: Int {
         service.usersStatisticsService.storage.getAllUsers().count
     }
-     
-    let service: ServicesAssembly
+    
+    private var userStatisticsServiceObserver: NSObjectProtocol?
+    
+    // MARK: - Init
     
     init(service: ServicesAssembly) {
         self.service = service
@@ -24,6 +26,8 @@ final class StatisticsPresenter {
             self?.delegate?.updateUsersTable()
         }
     }
+    
+    // MARK: Internal functions
     
     func loadData() {
         delegate?.dataIsLoad()
@@ -42,6 +46,13 @@ final class StatisticsPresenter {
         service.usersStatisticsService.storage.removeData()
         service.usersStatisticsService.currentPage = 0
         service.usersStatisticsService.sortParameter = parameter
+        delegate?.updateFullUsersTable()
+        loadData()
+    }
+    
+    func refreshData() {
+        service.usersStatisticsService.storage.removeData()
+        service.usersStatisticsService.currentPage = 0
         delegate?.updateFullUsersTable()
         loadData()
     }
@@ -65,7 +76,4 @@ final class StatisticsPresenter {
     }
 }
 
-enum SortType: String {
-    case name = "name"
-    case rating = "rating"
-}
+
