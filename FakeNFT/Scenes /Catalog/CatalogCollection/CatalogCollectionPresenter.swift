@@ -8,13 +8,6 @@
 import Foundation
 import UIKit
 
-protocol CatalogCollectionPresenterProtocol: AnyObject{
-    var numberOfItems: Int { get }
-    func viewDidLoad()
-    func configure(cell: CatalogCollectionCell, at index: Int)
-    func didTapAuthor()
-}
-
 final class CatalogCollectionPresenter: CatalogCollectionPresenterProtocol {
     
     private weak var view: CatalogCollectionViewProtocol?

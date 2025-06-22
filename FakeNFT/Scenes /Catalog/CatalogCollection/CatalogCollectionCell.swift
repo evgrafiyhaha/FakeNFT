@@ -8,7 +8,7 @@
 import UIKit
 import ProgressHUD
 
-class CatalogCollectionCell: UICollectionViewCell {
+final class CatalogCollectionCell: UICollectionViewCell {
     
     static let reuseIdentifier = "catalogCollectionCellIdentifier"
     

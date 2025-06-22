@@ -34,6 +34,7 @@ final class WebViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        webView.navigationDelegate = self
         view.backgroundColor = .white
         setupUI()
         webView.load(URLRequest(url: url))
@@ -67,4 +68,24 @@ final class WebViewController: UIViewController {
     
     
 }
+
+extension WebViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        ProgressHUD.show()
+    }
+
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        ProgressHUD.dismiss()
+    }
+
+
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        ProgressHUD.dismiss()
+    }
+
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        ProgressHUD.dismiss()
+    }
+}
+
 

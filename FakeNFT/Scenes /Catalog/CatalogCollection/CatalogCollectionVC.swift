@@ -10,16 +10,6 @@ import UIKit
 import Kingfisher
 import ProgressHUD
 
-protocol CatalogCollectionViewProtocol: AnyObject {
-    func showAuthor(name: String)
-    func showDescription(_ description: String)
-    func showCover(url: URL)
-    func showNftsCount(_ count: Int)
-    func showError(_ message: String)
-    func reloadCollectionView()
-    func showTitle(_ title: String)
-}
-
 final class CatalogCollectionVC: UIViewController {
     
     private var presenter: CatalogCollectionPresenterProtocol!
