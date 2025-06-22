@@ -20,6 +20,7 @@ final class UserCardPresenter {
     
     // MARK: - Internal functions
     
+    @MainActor
     func configure() {
         guard let avatarURL = URL(string: user.avatar) else { return }
         delegate?.userAvatarImageView.kf.setImage(with: avatarURL, placeholder: UIImage(resource: .mockImageUser))

@@ -43,17 +43,13 @@ final class StatisticsPresenter {
     }
     
     func filterUsers(by parameter: SortType) {
-        service.usersStatisticsService.storage.removeData()
-        service.usersStatisticsService.currentPage = 0
+        removeData()
         service.usersStatisticsService.sortParameter = parameter
-        delegate?.updateFullUsersTable()
         loadData()
     }
     
     func refreshData() {
-        service.usersStatisticsService.storage.removeData()
-        service.usersStatisticsService.currentPage = 0
-        delegate?.updateFullUsersTable()
+        removeData()
         loadData()
     }
     
@@ -73,6 +69,15 @@ final class StatisticsPresenter {
             }
         }
         cell.separatorInset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+    }
+    
+    // MARK: Private functions
+    
+    
+    private func removeData() {
+        service.usersStatisticsService.storage.removeData()
+        service.usersStatisticsService.currentPage = 0
+        delegate?.updateFullUsersTable()
     }
 }
 
