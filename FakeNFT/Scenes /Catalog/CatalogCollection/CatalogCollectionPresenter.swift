@@ -55,8 +55,10 @@ final class CatalogCollectionPresenter: CatalogCollectionPresenterProtocol {
     func didTapAuthor() {
         guard let url = URL(string: RequestConstants.ypURL) else {return}
         let webVC = WebViewController(url: url)
-        webVC.modalPresentationStyle = .fullScreen
-        (view as? UIViewController)?.present(webVC, animated: true)
+        let navVC = UINavigationController(rootViewController: webVC)
+        navVC.modalPresentationStyle = .fullScreen
+        (view as? UIViewController)?.present(navVC, animated: true)
+
     }
     
     

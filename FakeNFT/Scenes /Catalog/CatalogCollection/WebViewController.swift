@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import WebKit
-import ProgressHUD
 
 final class WebViewController: UIViewController {
     
@@ -21,7 +20,18 @@ final class WebViewController: UIViewController {
         return button
     }()
     
+    private lazy var progressView: UIProgressView = {
+            let progress = UIProgressView(progressViewStyle: .default)
+        progress.tintColor = .black
+            progress.trackTintColor = .clear
+            progress.alpha = 0
+            return progress
+        }()
+    
     private var webView: WKWebView = WKWebView()
+    
+    
+    private var progressObservation: NSKeyValueObservation?
     
     init(url: URL) {
         self.url = url
@@ -32,60 +42,81 @@ final class WebViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        progressObservation?.invalidate()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        webView.navigationDelegate = self
         view.backgroundColor = .white
+        webView.navigationDelegate = self
+        navigationController?.isNavigationBarHidden = false
         setupUI()
+        setupProgressObserver()
         webView.load(URLRequest(url: url))
-        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     private func setupUI() {
         
-        [webView, backButton].forEach {
+        [webView, progressView].forEach {
             view.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
         NSLayoutConstraint.activate([
-            webView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 42),
+            webView.topAnchor.constraint(equalTo: progressView.bottomAnchor),
             webView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             webView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             webView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
             
-            backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            backButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 9),
-            backButton.heightAnchor.constraint(equalToConstant: 24),
-            backButton.widthAnchor.constraint(equalToConstant: 24)
+            progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            progressView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            progressView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            progressView.heightAnchor.constraint(equalToConstant: 2)
+          
         ])
+        
         
     }
     
+    private func setupProgressObserver() {
+        progressObservation = webView.observe(\.estimatedProgress, options: [.new]) { [weak self] _, change in
+            guard let self = self else { return }
+            let progress = Float(change.newValue ?? 0)
+            self.progressView.setProgress(progress, animated: true)
+
+            if progress >= 1.0 {
+                UIView.animate(withDuration: 0.3, delay: 0.2, options: .curveEaseOut) {
+                    self.progressView.alpha = 0
+                } completion: { _ in
+                    self.progressView.setProgress(0, animated: false)
+                }
+            } else {
+                self.progressView.alpha = 1
+            }
+        }
+    }
+
+    
     @objc private func backButtonDidTap(){
-        dismiss(animated: true)
+        if let navigationController = navigationController, navigationController.viewControllers.first != self {
+                navigationController.popViewController(animated: true)
+            } else {
+                dismiss(animated: true, completion: nil)
+            }
     }
     
     
 }
 
 extension WebViewController: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        ProgressHUD.show()
-    }
-
-    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        ProgressHUD.dismiss()
-    }
-
-
-    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        ProgressHUD.dismiss()
-    }
-
-    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        ProgressHUD.dismiss()
-    }
+    
 }
+
 
 
