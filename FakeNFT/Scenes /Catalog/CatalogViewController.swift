@@ -34,6 +34,7 @@ class CatalogViewController: UIViewController {
     private lazy var filterButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "filterButton"), for: .normal)
+        button.addTarget(self, action: #selector(filterButtonDidTap), for: .touchUpInside)
         return button
     }()
     
@@ -52,6 +53,7 @@ class CatalogViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
+        filterButton.isEnabled = false
         setupUI()
         presenter.viewDidLoad()
     }
@@ -73,6 +75,29 @@ class CatalogViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+    
+    @objc private func filterButtonDidTap(){
+        let alert = UIAlertController(title: "", message: "Сортировка", preferredStyle: .actionSheet)
+        present(alert, animated: true)
+        let sortByName = UIAlertAction(title: "По названию", style: .default) { [weak self] _ in
+            guard let self = self else {return}
+            self.collection.sort {$0.name.localizedCompare($1.name) == .orderedAscending}
+            self.tableView.reloadData()
+            
+        }
+        
+        let sortByCount = UIAlertAction(title: "По количеству NFT", style: .default) { [weak self] _ in
+            guard let self = self else {return}
+            self.collection.sort {$0.nfts.count > $1.nfts.count}
+            self.tableView.reloadData()
+        }
+        
+        let closeAction = UIAlertAction(title: "Закрыть", style: .cancel)
+        
+        alert.addAction(sortByName)
+        alert.addAction(sortByCount)
+        alert.addAction(closeAction)
     }
     
 }
@@ -103,15 +128,18 @@ extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
 extension CatalogViewController: CatalogViewProtocol {
     func showLoading() {
         ProgressHUD.show()
+        filterButton.isEnabled = false
     }
     
     func hideLoading() {
         ProgressHUD.dismiss()
+        filterButton.isEnabled = true
     }
     
     func updateCollections(_ collections: [CatalogCollection]) {
         self.collection = collections
         tableView.reloadData()
+        filterButton.isEnabled = true
     }
     
     func showError(_ message: String) {
