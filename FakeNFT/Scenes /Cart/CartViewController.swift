@@ -20,7 +20,7 @@ final class CartViewController: UIViewController {
     
     private lazy var filterButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "filter"), for: .normal)
+        button.setImage(UIImage(resource: .filter), for: .normal)
         button.tintColor = .segmentActive
         button.addTarget(self, action: #selector(Self.didTapFilterButton), for: .touchUpInside)
         return button
@@ -216,9 +216,9 @@ extension CartViewController: CartTableViewCellDelegate {
         let confirmVC = ConfirmDeleteViewController()
         confirmVC.modalPresentationStyle = .overFullScreen
         confirmVC.modalTransitionStyle = .crossDissolve
-        confirmVC.onDelete = {
-            self.nfts.removeAll { $0.id == id }
-            self.reloadData()
+        confirmVC.onDelete = { [weak self] in
+            self?.nfts.removeAll { $0.id == id }
+            self?.reloadData()
         }
         confirmVC.setupImage(image)
         

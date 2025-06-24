@@ -4,10 +4,9 @@ final class ConfirmDeleteViewController: UIViewController {
 
     var onDelete: (() -> Void)?
 
-
     private lazy var nftImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "placeholder")
+        imageView.image = UIImage(resource: .placeholder)
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 12

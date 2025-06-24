@@ -15,7 +15,7 @@ final class CartTableViewCell: UITableViewCell {
     
     private lazy var nftImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "placeholder")
+        imageView.image = UIImage(resource: .placeholder)
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 12
@@ -45,7 +45,7 @@ final class CartTableViewCell: UITableViewCell {
     }()
     
     private lazy var deleteButton: UIButton = {
-        let image = UIImage(named: "cart")
+        let image = UIImage(resource: .cart)
         let button = UIButton(type: .system)
         button.addTarget(self, action: #selector(Self.didTapDeleteButton), for: .touchUpInside)
         button.setImage(image, for: .normal)
@@ -55,7 +55,7 @@ final class CartTableViewCell: UITableViewCell {
     
     private let starImageViews: [UIImageView] = (0..<5).map { _ in
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "star")?.withRenderingMode(.alwaysTemplate)
+        imageView.image = UIImage(resource: .star).withRenderingMode(.alwaysTemplate)
         imageView.tintColor = .segmentInactive
         return imageView
     }
