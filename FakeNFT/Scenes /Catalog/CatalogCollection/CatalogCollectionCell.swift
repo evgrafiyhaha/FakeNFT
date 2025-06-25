@@ -8,9 +8,18 @@
 import UIKit
 import ProgressHUD
 
+protocol CellDelegate: AnyObject {
+    func reloadCart(model: CatalogCollectionCellModel)
+    func reloadLike(model: CatalogCollectionCellModel)
+}
+
 final class CatalogCollectionCell: UICollectionViewCell {
     
     static let reuseIdentifier = "catalogCollectionCellIdentifier"
+    
+    weak var delegate: CellDelegate?
+    
+    private var model: CatalogCollectionCellModel?
     
     private lazy var image: UIImageView = {
         let image = UIImageView()
@@ -21,13 +30,13 @@ final class CatalogCollectionCell: UICollectionViewCell {
     
     private lazy var likeButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "likeButton_on"), for: .normal)
+        button.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         return button
     }()
     
     private lazy var cartButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "cartButton"), for: .normal)
+        button.addTarget(self, action: #selector(didTapCartButton), for: .touchUpInside)
         return button
     }()
     
@@ -66,6 +75,11 @@ final class CatalogCollectionCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        ratingStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+    }
+
     private func setupUI(){
         
         [nameLabel, image, likeButton, ratingStackView, priceLabel, indicator, cartButton].forEach {
@@ -127,14 +141,16 @@ final class CatalogCollectionCell: UICollectionViewCell {
         
     }
     
-    func configure(nft: Nft) {
-        image.kf.setImage(with: nft.images.first)
-        nameLabel.text = nft.name
-        priceLabel.text = "\(nft.price) ETH"
+    func configure(model: CatalogCollectionCellModel) {
+        self.model = model
+        image.kf.setImage(with: model.images.first)
+        nameLabel.text = model.name
+        priceLabel.text = "\(model.price) ETH"
         for star in 1...5 {
-            star <= nft.rating ? setRating(isFull: true) : setRating(isFull: false)
+            star <= model.rating ? setRating(isFull: true) : setRating(isFull: false)
         }
-        cartButton.setImage(UIImage(named: "cartEmpty"), for: .normal)
+        cartButton.setImage(model.isOrders ? UIImage(named: "cartDelete") : UIImage(named: "cartEmpty"), for: .normal)
+        likeButton.setImage(model.isLikes ? UIImage(named: "likeButton_on") : UIImage(named: "likeButton_off") , for: .normal)
     }
     
     func startAnimation(){
@@ -146,5 +162,16 @@ final class CatalogCollectionCell: UICollectionViewCell {
         image.isHidden = false
         indicator.stopAnimating()
     }
+    
+    @objc private func didTapLikeButton(){
+        guard let model else {return}
+        delegate?.reloadLike(model: model)
+    }
+    
+    @objc private func didTapCartButton(){
+        guard let model else {return}
+        delegate?.reloadCart(model: model)
+    }
+    
     
 }

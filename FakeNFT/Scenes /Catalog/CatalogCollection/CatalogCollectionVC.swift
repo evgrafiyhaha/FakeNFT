@@ -13,6 +13,8 @@ import ProgressHUD
 final class CatalogCollectionVC: UIViewController {
     
     private var presenter: CatalogCollectionPresenterProtocol!
+    private let servicesAssembly: ServicesAssembly
+    private let catalogCollection: CatalogCollection
     
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -90,14 +92,17 @@ final class CatalogCollectionVC: UIViewController {
     }()
     
     init(catalogCollection: CatalogCollection, servicesAssembly: ServicesAssembly) {
+        self.catalogCollection = catalogCollection
+        self.servicesAssembly = servicesAssembly
         super.init(nibName: nil, bundle: nil)
         self.presenter = CatalogCollectionPresenter(
             view: self,
             catalogCollection: catalogCollection,
-            nftService: servicesAssembly.nftService
+            nftService: servicesAssembly.nftService,
+            servicesAssembly: servicesAssembly
         )
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -187,8 +192,8 @@ extension CatalogCollectionVC: UICollectionViewDelegate, UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CatalogCollectionCell.reuseIdentifier, for: indexPath) as? CatalogCollectionCell else {return UICollectionViewCell()}
-        
-        presenter.configure(cell: cell, at: indexPath.row)
+        cell.delegate = self
+        presenter.configureCell(cell: cell, indexPath: indexPath)
         return cell
     }
     
@@ -204,6 +209,11 @@ extension CatalogCollectionVC: UICollectionViewDelegate, UICollectionViewDataSou
 }
 
 extension CatalogCollectionVC: CatalogCollectionViewProtocol {
+    
+    func updateCell(at indexPath: IndexPath, with model: CatalogCollectionCellModel) {
+        collectionView.reloadItems(at: [indexPath])
+    }
+    
     func showAuthor(name: String) {
         authorNameLabel.text = name
         authorNameLabel.isUserInteractionEnabled = true
@@ -236,5 +246,15 @@ extension CatalogCollectionVC: CatalogCollectionViewProtocol {
         collectionLabel.text = title
     }
     
+}
+
+extension CatalogCollectionVC: CellDelegate {
+    func reloadCart(model: CatalogCollectionCellModel) {
+        presenter.reloadCart(model: model)
+    }
     
+    func reloadLike(model: CatalogCollectionCellModel) {
+        presenter.reloadLike(model: model)
+        
+    }
 }
