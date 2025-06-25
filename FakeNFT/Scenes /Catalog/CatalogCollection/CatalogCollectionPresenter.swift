@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import ProgressHUD
 
 final class CatalogCollectionPresenter: CatalogCollectionPresenterProtocol {
     
@@ -117,6 +118,8 @@ final class CatalogCollectionPresenter: CatalogCollectionPresenterProtocol {
         }
     
     func reloadCart(model: CatalogCollectionCellModel) {
+        ProgressHUD.show()
+
         if model.isOrders {
             ordersList.removeAll { $0 == model.id }
         } else {
@@ -126,6 +129,11 @@ final class CatalogCollectionPresenter: CatalogCollectionPresenterProtocol {
         let networkService = DefaultNetworkClient()
         networkService.send(request: request, type: Orders.self) { [weak self] result in
             guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                ProgressHUD.dismiss()
+            }
+
             switch result {
             case .success(let order):
                 self.ordersList = order.nfts
@@ -139,8 +147,11 @@ final class CatalogCollectionPresenter: CatalogCollectionPresenterProtocol {
             }
         }
     }
+
     
     func reloadLike(model: CatalogCollectionCellModel) {
+        ProgressHUD.show()
+
         if model.isLikes {
             likesList.removeAll { $0 == model.id }
         } else {
@@ -150,6 +161,11 @@ final class CatalogCollectionPresenter: CatalogCollectionPresenterProtocol {
         let networkService = DefaultNetworkClient()
         networkService.send(request: request, type: Profile.self) { [weak self] result in
             guard let self = self else { return }
+
+            DispatchQueue.main.async {
+                ProgressHUD.dismiss()
+            }
+            
             switch result {
             case .success(let profile):
                 self.likesList = profile.likes
@@ -163,6 +179,7 @@ final class CatalogCollectionPresenter: CatalogCollectionPresenterProtocol {
             }
         }
     }
+
 
 }
 
