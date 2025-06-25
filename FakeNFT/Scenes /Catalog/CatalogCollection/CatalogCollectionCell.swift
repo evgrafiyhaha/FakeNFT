@@ -138,10 +138,12 @@ final class CatalogCollectionCell: UICollectionViewCell {
     }
     
     func startAnimation(){
+        image.isHidden = true
         indicator.startAnimating()
     }
     
     func stopAnimation() {
+        image.isHidden = false
         indicator.stopAnimating()
     }
     
