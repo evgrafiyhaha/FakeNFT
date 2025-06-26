@@ -3,15 +3,17 @@ import Kingfisher
 
 final class StatisticsPresenter {
     
-    private var userStatisticsServiceObserver: NSObjectProtocol?
-    
     weak var delegate: StatisticsViewControllerDelegate?
+     
+    let service: ServicesAssembly
     
     var countOfUsers: Int {
         service.usersStatisticsService.storage.getAllUsers().count
     }
-     
-    let service: ServicesAssembly
+    
+    private var userStatisticsServiceObserver: NSObjectProtocol?
+    
+    // MARK: - Init
     
     init(service: ServicesAssembly) {
         self.service = service
@@ -25,6 +27,8 @@ final class StatisticsPresenter {
         }
     }
     
+    // MARK: Internal functions
+    
     func loadData() {
         delegate?.dataIsLoad()
         service.usersStatisticsService.fetchUsersNextPage()
@@ -36,6 +40,17 @@ final class StatisticsPresenter {
     
     func loadNextPage() {
         service.usersStatisticsService.fetchUsersNextPage()
+    }
+    
+    func filterUsers(by parameter: SortType) {
+        removeData()
+        service.usersStatisticsService.sortParameter = parameter
+        loadData()
+    }
+    
+    func refreshData() {
+        removeData()
+        loadData()
     }
     
     @MainActor
@@ -55,4 +70,15 @@ final class StatisticsPresenter {
         }
         cell.separatorInset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
     }
+    
+    // MARK: Private functions
+    
+    
+    private func removeData() {
+        service.usersStatisticsService.storage.removeData()
+        service.usersStatisticsService.currentPage = 0
+        delegate?.updateFullUsersTable()
+    }
 }
+
+

@@ -6,4 +6,5 @@ protocol StatisticsViewControllerDelegate: AnyObject {
     func updateRowUsersTable(at indexPath: IndexPath)
     func dataIsLoad()
     func dataDidLoaded()
+    func updateFullUsersTable()
 }
