@@ -87,7 +87,16 @@ final class CartViewController: UIViewController {
         setupSubviews()
         setupConstraints()
         presenter?.viewDidLoad()
+    }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
     func reloadData() {
@@ -169,14 +178,12 @@ final class CartViewController: UIViewController {
         )
         vc.navigationItem.leftBarButtonItem?.tintColor = .segmentActive
 
-        let navController = UINavigationController(rootViewController: vc)
-        navController.modalPresentationStyle = .fullScreen
-        present(navController, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     @objc
     private func didTapClose() {
-        dismiss(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 
     @objc

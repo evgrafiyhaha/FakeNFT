@@ -12,7 +12,7 @@ final class WebViewPresenter: WebViewPresenterProtocol {
     weak var view: WebViewViewControllerProtocol?
 
     func viewDidLoad() {
-        guard let url = URL(string:"https://yandex.ru/legal/practicum_termsofuse/") else {
+        guard let url = URL(string: RequestConstants.userAgreementURL) else {
             return
         }
         let request = URLRequest(url: url)
