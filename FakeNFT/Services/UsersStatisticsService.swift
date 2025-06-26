@@ -15,7 +15,7 @@ final class UserStatisticsServiceImpl: UsersStatisticsService  {
     var storage: UsersStatisticsStorage
     
     var currentPage: Int = 0
-    var sortParameter: SortType? = nil
+    var sortParameter: SortType?
     
     private let networkClient: NetworkClient
     

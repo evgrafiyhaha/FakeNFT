@@ -22,8 +22,9 @@ final class UserCardPresenter {
     
     @MainActor
     func configure() {
-        guard let avatarURL = URL(string: user.avatar) else { return }
-        delegate?.userAvatarImageView.kf.setImage(with: avatarURL, placeholder: UIImage(resource: .mockImageUser))
+        if let avatarURL = URL(string: user.avatar) {
+            delegate?.userAvatarImageView.kf.setImage(with: avatarURL, placeholder: UIImage(resource: .mockImageUser))
+        }
         delegate?.userNameLabel.text = user.name
         delegate?.descriptionLabel.text = user.description
         delegate?.collectionNFTButton.setTitle("Коллекция NFT  (\(user.nfts.count))", for: .normal)

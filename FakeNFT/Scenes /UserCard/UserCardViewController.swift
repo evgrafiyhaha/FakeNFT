@@ -53,8 +53,8 @@ final class UserCardViewController: UIViewController, UserCardViewDelegate {
     
     lazy var collectionNFTButton = createCollectionNFTButton()
     
-    lazy private var backButton = createBackButton()
-    lazy private var visitWebsiteButton = createVisitWebsiteButton()
+    private lazy var backButton = createBackButton()
+    private lazy var visitWebsiteButton = createVisitWebsiteButton()
     
     // MARK: - Life cycle
 

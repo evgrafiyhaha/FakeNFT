@@ -69,23 +69,21 @@ final class StatisticsViewController: UIViewController {
     // MARK: @objc functions
     
     @objc private func refreshData() {
-        self.refreshControl.endRefreshing()
+        refreshControl.endRefreshing()
         presenter.refreshData()
     }
     
-    @objc func showSortAlert() {
+    @objc private func showSortAlert() {
         let alert = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
         
         let sortByNameAction = UIAlertAction(title: "По имени", style: .default) { [weak self] _ in
             print("Сортировка по имени")
-            let sortParameter = SortType.name
-            self?.presenter.filterUsers(by: sortParameter)
+            self?.presenter.filterUsers(by: .name)
         }
         
         let sortByRatingAction = UIAlertAction(title: "По рейтингу", style: .default) { [weak self] _ in
             print("Сортировка по рейтингу")
-            let sortParameter = SortType.rating
-            self?.presenter.filterUsers(by: sortParameter)
+            self?.presenter.filterUsers(by: .rating)
         }
         
         let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
