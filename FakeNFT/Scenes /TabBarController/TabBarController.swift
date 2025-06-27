@@ -1,25 +1,19 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
-
+    
     var servicesAssembly: ServicesAssembly!
-
-    private let catalogTabBarItem = UITabBarItem(
-        title: NSLocalizedString("Tab.catalog", comment: ""),
-        image: UIImage(systemName: "square.stack.3d.up.fill"),
-        tag: 0
-    )
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let catalogController = TestCatalogViewController(
-            servicesAssembly: servicesAssembly
+        
+        let profileViewController = ProfileConfigurator().configure()
+        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
+        profileNavigationController.tabBarItem = UITabBarItem(
+            title: NSLocalizedString("Tab.profile", comment: ""),
+            image: UIImage(systemName: "person.crop.circle.fill"),
+            selectedImage: nil
         )
-        catalogController.tabBarItem = catalogTabBarItem
-
-        viewControllers = [catalogController]
-
-        view.backgroundColor = .systemBackground
+        
     }
 }
