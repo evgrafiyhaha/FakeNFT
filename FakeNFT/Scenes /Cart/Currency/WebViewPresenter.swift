@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol WebViewPresenterProtocol {
+protocol WebViewPresenterProtocol {
     var view: WebViewViewControllerProtocol? { get set }
     func viewDidLoad()
     func didUpdateProgressValue(_ newValue: Double)
@@ -30,7 +30,7 @@ final class WebViewPresenter: WebViewPresenterProtocol {
         view?.setProgressHidden(shouldHideProgress)
     }
 
-    func shouldHideProgress(for value: Float) -> Bool {
+    private func shouldHideProgress(for value: Float) -> Bool {
         abs(value - 1.0) <= 0.0001
     }
 
