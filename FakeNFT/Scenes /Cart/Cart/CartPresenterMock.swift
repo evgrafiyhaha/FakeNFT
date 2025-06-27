@@ -14,7 +14,7 @@ final class CartPresenterMock: CartPresenterProtocol {
 
         return [
             Nft(
-                id: "1",
+                id: "c14cf3bc-7470-4eec-8a42-5eaa65f4053c",
                 name: "Dominique Parks",
                 rating: 2,
                 images: [
@@ -25,7 +25,7 @@ final class CartPresenterMock: CartPresenterProtocol {
                 price: 49.99
             ),
             Nft(
-                id: "2",
+                id: "d6a02bd1-1255-46cd-815b-656174c1d9c0",
                 name: "Christi Noel",
                 rating: 2,
                 images: [
@@ -36,7 +36,7 @@ final class CartPresenterMock: CartPresenterProtocol {
                 price: 36.54
             ),
             Nft(
-                id: "3",
+                id: "f380f245-0264-4b42-8e7e-c4486e237504",
                 name: "Olive Avila",
                 rating: 2,
                 images: [
