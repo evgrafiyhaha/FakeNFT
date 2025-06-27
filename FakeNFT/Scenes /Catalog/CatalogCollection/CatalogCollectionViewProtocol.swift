@@ -15,4 +15,6 @@ protocol CatalogCollectionViewProtocol: AnyObject {
     func showError(_ message: String)
     func reloadCollectionView()
     func showTitle(_ title: String)
+    func updateCell(at indexPath: IndexPath, with model: CatalogCollectionCellModel)
 }
+

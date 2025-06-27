@@ -21,6 +21,7 @@ class CatalogViewController: UIViewController {
     private var collection: [CatalogCollection] = []
     private var presenter: CatalogPresenterProtocol!
     private let servicesAssembly: ServicesAssembly
+    private let sortOptionKey = "catalogSortOption"
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -34,6 +35,7 @@ class CatalogViewController: UIViewController {
     private lazy var filterButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "filterButton"), for: .normal)
+        button.addTarget(self, action: #selector(filterButtonDidTap), for: .touchUpInside)
         return button
     }()
     
@@ -52,6 +54,7 @@ class CatalogViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
+        filterButton.isEnabled = false
         setupUI()
         presenter.viewDidLoad()
     }
@@ -74,6 +77,39 @@ class CatalogViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+    
+    @objc private func filterButtonDidTap(){
+        
+        let alert = UIAlertController(title: "", message: "Сортировка", preferredStyle: .actionSheet)
+        let sortByName = UIAlertAction(title: "По названию", style: .default) { [weak self] _ in
+            self?.applySort(.name)
+        }
+        
+        let sortByCount = UIAlertAction(title: "По количеству NFT", style: .default) { [weak self] _ in
+            self?.applySort(.count)
+        }
+        
+        let closeAction = UIAlertAction(title: "Закрыть", style: .cancel)
+        
+        alert.addAction(sortByName)
+        alert.addAction(sortByCount)
+        alert.addAction(closeAction)
+        
+        present(alert, animated: true)
+    }
+    
+    private func applySort(_ option: CatalogSortOption) {
+            UserDefaults.standard.set(option.rawValue, forKey: sortOptionKey)
+
+            switch option {
+            case .name:
+                self.collection.sort { $0.name.localizedCompare($1.name) == .orderedAscending }
+            case .count:
+                self.collection.sort { $0.nfts.count > $1.nfts.count }
+            }
+
+            self.tableView.reloadData()
+        }
     
 }
 
@@ -103,15 +139,24 @@ extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
 extension CatalogViewController: CatalogViewProtocol {
     func showLoading() {
         ProgressHUD.show()
+        filterButton.isEnabled = false
     }
     
     func hideLoading() {
         ProgressHUD.dismiss()
+        filterButton.isEnabled = true
     }
     
     func updateCollections(_ collections: [CatalogCollection]) {
         self.collection = collections
-        tableView.reloadData()
+        
+        if let savedValue = UserDefaults.standard.string(forKey: sortOptionKey),
+           let savedSortOption = CatalogSortOption(rawValue: savedValue) {
+            applySort(savedSortOption)
+        } else {
+            tableView.reloadData()
+        }
+        filterButton.isEnabled = true
     }
     
     func showError(_ message: String) {
