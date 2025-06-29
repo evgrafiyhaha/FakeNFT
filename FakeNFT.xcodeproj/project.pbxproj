@@ -42,6 +42,7 @@
 		3FC8C38B29D242E90081F015 /* ProductDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C38A29D242E90081F015 /* ProductDetailsTableViewCell.swift */; };
 		3FC8C39129D2453B0081F015 /* ExamplePutRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C39029D2453B0081F015 /* ExamplePutRequest.swift */; };
 		3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */; };
+		4E519E152E11649B005561B5 /* NftStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E519E142E11649B005561B5 /* NftStatistics.swift */; };
 		4EE1B8792DFB72B200C9305F /* UserStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE1B8782DFB72B200C9305F /* UserStatistics.swift */; };
 		4EE1B87B2DFB760900C9305F /* UsersStatisticsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE1B87A2DFB760900C9305F /* UsersStatisticsStorage.swift */; };
 		4EE1B87D2DFB7AB300C9305F /* UsersStatisticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE1B87C2DFB7AB300C9305F /* UsersStatisticsService.swift */; };
@@ -107,6 +108,7 @@
 		3FC8C38A29D242E90081F015 /* ProductDetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		3FC8C39029D2453B0081F015 /* ExamplePutRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamplePutRequest.swift; sourceTree = "<group>"; };
 		3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatters+Presets.swift"; sourceTree = "<group>"; };
+		4E519E142E11649B005561B5 /* NftStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftStatistics.swift; sourceTree = "<group>"; };
 		4EE1B8782DFB72B200C9305F /* UserStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatistics.swift; sourceTree = "<group>"; };
 		4EE1B87A2DFB760900C9305F /* UsersStatisticsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersStatisticsStorage.swift; sourceTree = "<group>"; };
 		4EE1B87C2DFB7AB300C9305F /* UsersStatisticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersStatisticsService.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		4E3FE91C2E0D95890034C8DE /* UsersCollections */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UsersCollections; sourceTree = "<group>"; };
 		4E6EEA022E0723570040AC9D /* UserCardWeb */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UserCardWeb; sourceTree = "<group>"; };
 		4E88B3062DF86DB500F77F70 /* Statistics */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Statistics; sourceTree = "<group>"; };
 		4EB24B1F2E0347410065EAE9 /* UserCard */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UserCard; sourceTree = "<group>"; };
@@ -283,6 +286,7 @@
 		3F6806C729CBBC5B00B4F915 /* Scenes  */ = {
 			isa = PBXGroup;
 			children = (
+				4E3FE91C2E0D95890034C8DE /* UsersCollections */,
 				4E6EEA022E0723570040AC9D /* UserCardWeb */,
 				4EB24B1F2E0347410065EAE9 /* UserCard */,
 				4E88B3062DF86DB500F77F70 /* Statistics */,
@@ -339,6 +343,7 @@
 			children = (
 				0CFCB7412A78013E0009A829 /* Nft.swift */,
 				4EE1B8782DFB72B200C9305F /* UserStatistics.swift */,
+				4E519E142E11649B005561B5 /* NftStatistics.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -398,6 +403,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				4E3FE91C2E0D95890034C8DE /* UsersCollections */,
 				4E6EEA022E0723570040AC9D /* UserCardWeb */,
 				4E88B3062DF86DB500F77F70 /* Statistics */,
 				4EB24B1F2E0347410065EAE9 /* UserCard */,
@@ -545,6 +551,7 @@
 				0CF2C2DB2A783C1B00FDC837 /* LoadingView.swift in Sources */,
 				558E39E72C68CE0A00FB86AC /* NftService.swift in Sources */,
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
+				4E519E152E11649B005561B5 /* NftStatistics.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,
 				4EE1B87D2DFB7AB300C9305F /* UsersStatisticsService.swift in Sources */,
 				0C79EE6C2A76DE2E00EE90EA /* ServicesAssemly.swift in Sources */,

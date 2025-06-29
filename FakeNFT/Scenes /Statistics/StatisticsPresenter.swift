@@ -73,7 +73,6 @@ final class StatisticsPresenter {
     
     // MARK: Private functions
     
-    
     private func removeData() {
         service.usersStatisticsService.storage.removeData()
         service.usersStatisticsService.currentPage = 0
