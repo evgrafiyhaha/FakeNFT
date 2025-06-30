@@ -6,7 +6,7 @@ final class TabBarController: UITabBarController {
 
     private let catalogTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.catalog", comment: ""),
-        image: UIImage(systemName: "square.stack.3d.up.fill"),
+        image: UIImage(named: "catalogTabBarActive"),
         tag: 0
     )
 
@@ -19,9 +19,7 @@ final class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let catalogController = TestCatalogViewController(
-            servicesAssembly: servicesAssembly
-        )
+        let catalogController = CatalogViewController(serviceAssembly: servicesAssembly)
         catalogController.tabBarItem = catalogTabBarItem
 
         let cartController = CartViewController(
