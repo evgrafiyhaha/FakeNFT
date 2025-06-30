@@ -138,7 +138,7 @@ extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension CatalogViewController: CatalogViewProtocol {
     func showLoading() {
-        ProgressHUD.show()
+        ProgressHUD.animate()
         filterButton.isEnabled = false
     }
     

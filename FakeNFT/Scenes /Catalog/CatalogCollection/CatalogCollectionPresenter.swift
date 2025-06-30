@@ -118,7 +118,7 @@ final class CatalogCollectionPresenter: CatalogCollectionPresenterProtocol {
         }
     
     func reloadCart(model: CatalogCollectionCellModel) {
-        ProgressHUD.show()
+        ProgressHUD.animate()
 
         if model.isOrders {
             ordersList.removeAll { $0 == model.id }
@@ -150,7 +150,7 @@ final class CatalogCollectionPresenter: CatalogCollectionPresenterProtocol {
 
     
     func reloadLike(model: CatalogCollectionCellModel) {
-        ProgressHUD.show()
+        ProgressHUD.animate()
 
         if model.isLikes {
             likesList.removeAll { $0 == model.id }

@@ -22,7 +22,7 @@ final class ServicesAssembly {
            networkClient
        }
   
-    var catalogNetworkClient: NetworkClient {
+    var cartNetworkClient: NetworkClient {
            networkClient
        }
 }

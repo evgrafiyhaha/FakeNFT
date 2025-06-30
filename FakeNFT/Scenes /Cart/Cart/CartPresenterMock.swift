@@ -1,6 +1,10 @@
 import Foundation
 
 final class CartPresenterMock: CartPresenterProtocol {
+    func reloadCart(with nfts: [String]) {
+        
+    }
+    
 
     weak var view: CartViewProtocol?
 

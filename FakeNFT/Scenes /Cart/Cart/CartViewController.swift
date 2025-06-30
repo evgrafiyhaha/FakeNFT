@@ -9,13 +9,20 @@ final class CartViewController: UIViewController {
     private var presenter: CartPresenterProtocol?
     private var nfts: [Nft] = []
     private var servicesAssembly: ServicesAssembly
-    
+
+    private lazy var refreshControl: UIRefreshControl = {
+            let refreshControl = UIRefreshControl()
+            refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+            return refreshControl
+        }()
+
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(CartTableViewCell.self, forCellReuseIdentifier: CartTableViewCell.reuseIdentifier)
         tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.refreshControl = refreshControl
         return tableView
     }()
     
@@ -72,7 +79,7 @@ final class CartViewController: UIViewController {
     init(servicesAssembly: ServicesAssembly) {
         self.servicesAssembly = servicesAssembly
         super.init(nibName: nil, bundle: nil)
-        self.presenter = CartPresenterMock(view: self, networkService: servicesAssembly.cartNetworkClient)
+        self.presenter = CartPresenter(view: self, networkService: servicesAssembly.cartNetworkClient)
         
     }
     
@@ -86,11 +93,11 @@ final class CartViewController: UIViewController {
         view.backgroundColor = .systemBackground
         setupSubviews()
         setupConstraints()
-        presenter?.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        presenter?.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
@@ -166,7 +173,11 @@ final class CartViewController: UIViewController {
         let price = nfts.reduce(into: 0) {$0 += $1.price}
         totalPriceLabel.text = String(format: "%.2f", price) + " ETH"
     }
-    
+
+    @objc private func handleRefresh() {
+            presenter?.viewDidLoad()
+        }
+
     @objc
     private func didTapPaymentButton() {
         let vc = CurrencyViewController(
@@ -243,8 +254,8 @@ extension CartViewController: UITableViewDataSource, UITableViewDelegate {
 extension CartViewController: CartViewProtocol {
     func updateNfts(with nfts: [Nft]) {
         self.nfts = nfts
+        refreshControl.endRefreshing()
         reloadData()
-        
     }
 }
 
@@ -254,8 +265,9 @@ extension CartViewController: CartTableViewCellDelegate {
         confirmVC.modalPresentationStyle = .overFullScreen
         confirmVC.modalTransitionStyle = .crossDissolve
         confirmVC.onDelete = { [weak self] in
-            self?.nfts.removeAll { $0.id == id }
-            self?.reloadData()
+            guard let self = self else { return }
+            self.nfts.removeAll { $0.id == id }
+            self.presenter?.reloadCart(with: self.nfts.map(\.id))
         }
         confirmVC.setupImage(image)
         
