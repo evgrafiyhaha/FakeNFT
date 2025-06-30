@@ -10,14 +10,27 @@ final class TabBarController: UITabBarController {
         tag: 0
     )
 
+    private let cartTabBarItem = UITabBarItem(
+        title: NSLocalizedString("Tab.cart", comment: ""),
+        image: UIImage(resource: .basket).withTintColor(.segmentActive),
+        tag: 1
+    )
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         let catalogController = CatalogViewController(serviceAssembly: servicesAssembly)
         catalogController.tabBarItem = catalogTabBarItem
 
-        viewControllers = [catalogController]
+        let cartController = CartViewController(
+            servicesAssembly: servicesAssembly
+        )
+        let navController = UINavigationController(rootViewController: cartController)
+        navController.modalPresentationStyle = .fullScreen
+        navController.tabBarItem = cartTabBarItem
 
+        viewControllers = [catalogController,navController]
+        tabBar.unselectedItemTintColor = .segmentActive
         view.backgroundColor = .systemBackground
     }
 }

@@ -17,7 +17,11 @@ final class ServicesAssembly {
             storage: nftStorage
         )
     }
-    
+  
+    var catalogNetworkClient: NetworkClient {
+           networkClient
+       }
+  
     var catalogNetworkClient: NetworkClient {
            networkClient
        }
