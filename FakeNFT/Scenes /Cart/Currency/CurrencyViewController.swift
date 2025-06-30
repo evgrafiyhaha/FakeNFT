@@ -5,6 +5,8 @@ protocol CurrencyViewProtocol: AnyObject {
     func showLoading()
     func hideLoading()
     func updateCurrencies(with currencies: [Currency])
+    func presentSuccessScreen()
+    func showRetryAlert(retryAction: @escaping () -> Void)
 }
 
 final class CurrencyViewController: UIViewController {
@@ -58,13 +60,22 @@ final class CurrencyViewController: UIViewController {
         button.backgroundColor = .segmentActive.withAlphaComponent(0.3)
         button.layer.cornerRadius = 16
         button.isEnabled = false
+        button.addTarget(self, action: #selector(Self.paymentButtonTapped), for: .touchUpInside)
         return button
     }()
 
-    init(servicesAssembly: ServicesAssembly) {
+    init(
+        nfts: [Nft],
+        servicesAssembly: ServicesAssembly,
+        onSuccess: @escaping () -> Void
+    ) {
         super.init(nibName: nil, bundle: nil)
-        self.presenter = CurrencyPresenter(view: self, networkService: servicesAssembly.cartNetworkClient)
-
+        self.presenter = CurrencyPresenter(
+            view: self,
+            nfts: nfts,
+            onSuccess: onSuccess,
+            networkService: servicesAssembly.cartNetworkClient
+        )
     }
 
     required init?(coder: NSCoder) {
@@ -80,6 +91,37 @@ final class CurrencyViewController: UIViewController {
         navigationController?.navigationBar.tintColor = .segmentActive
         navigationItem.title = "Выберите способ оплаты"
         presenter?.viewDidLoad()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = true
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tabBarController?.tabBar.isHidden = false
+    }
+
+    func presentSuccessScreen() {
+        let vc = SuccessViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+    func showRetryAlert(retryAction: @escaping () -> Void) {
+        let alert = UIAlertController(
+            title: "Не удалось произвести\nоплату",
+            message: nil,
+            preferredStyle: .alert
+        )
+
+        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
+
+        alert.addAction(UIAlertAction(title: "Повторить", style: .default, handler: { _ in
+            retryAction()
+        }))
+
+        present(alert, animated: true, completion: nil)
     }
 
     private func setupSubviews() {
@@ -99,7 +141,7 @@ final class CurrencyViewController: UIViewController {
         paymentButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 16),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -16),
             collectionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 205),
@@ -132,6 +174,11 @@ final class CurrencyViewController: UIViewController {
         webViewViewController.modalPresentationStyle = .fullScreen
         hideLoading()
         self.navigationController?.pushViewController(webViewViewController, animated: true)
+    }
+
+    @objc
+    private func paymentButtonTapped() {
+        presenter?.pay()
     }
 }
 
