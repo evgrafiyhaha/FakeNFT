@@ -15,35 +15,32 @@ final class CartPresenterMock: CartPresenterProtocol {
         return [
             Nft(
                 id: "c14cf3bc-7470-4eec-8a42-5eaa65f4053c",
-                name: "Dominique Parks",
-                rating: 2,
                 images: [
                     safeUrl("https://code.s3.yandex.net/Mobile/iOS/NFT/Gray/Bethany/1.png"),
                     safeUrl("https://code.s3.yandex.net/Mobile/iOS/NFT/Gray/Bethany/2.png"),
                     safeUrl("https://code.s3.yandex.net/Mobile/iOS/NFT/Gray/Bethany/3.png")
-                ],
+                ], name: "Dominique Parks",
+                rating: 2,
                 price: 49.99
             ),
             Nft(
                 id: "d6a02bd1-1255-46cd-815b-656174c1d9c0",
-                name: "Christi Noel",
-                rating: 2,
                 images: [
                     safeUrl("https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/April/1.png"),
                     safeUrl("https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/April/2.png"),
                     safeUrl("https://code.s3.yandex.net/Mobile/iOS/NFT/Beige/April/3.png")
-                ],
+                ], name: "Christi Noel",
+                rating: 2,
                 price: 36.54
             ),
             Nft(
                 id: "f380f245-0264-4b42-8e7e-c4486e237504",
-                name: "Olive Avila",
-                rating: 2,
                 images: [
                     safeUrl("https://code.s3.yandex.net/Mobile/iOS/NFT/Blue/Bonnie/1.png"),
                     safeUrl("https://code.s3.yandex.net/Mobile/iOS/NFT/Blue/Bonnie/2.png"),
                     safeUrl("https://code.s3.yandex.net/Mobile/iOS/NFT/Blue/Bonnie/3.png")
-                ],
+                ], name: "Olive Avila",
+                rating: 2,
                 price: 21.0
             ),
         ]
