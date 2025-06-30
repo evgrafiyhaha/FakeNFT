@@ -74,4 +74,10 @@ extension UIColor {
         ? yaBlackDark
         : yaBlackLight
     }
+
+    static let segmentActiveWhite = UIColor { traits in
+        return traits.userInterfaceStyle != .dark
+        ? .yaBlackDark
+        : .yaBlackLight
+    }
 }

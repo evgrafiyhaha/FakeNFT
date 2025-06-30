@@ -56,7 +56,7 @@ final class CurrencyViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Оплатить", for: .normal)
         button.titleLabel?.font = .bodyBold
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.segmentActiveWhite, for: .normal)
         button.backgroundColor = .segmentActive.withAlphaComponent(0.3)
         button.layer.cornerRadius = 16
         button.isEnabled = false

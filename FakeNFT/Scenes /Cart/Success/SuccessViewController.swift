@@ -22,7 +22,7 @@ final class SuccessViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Вернуться в корзину", for: .normal)
         button.titleLabel?.font = .bodyBold
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.segmentActiveWhite, for: .normal)
         button.backgroundColor = .segmentActive
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(Self.didTapReturnButton), for: .touchUpInside)

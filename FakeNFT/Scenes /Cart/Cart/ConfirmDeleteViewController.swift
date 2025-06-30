@@ -27,7 +27,7 @@ final class ConfirmDeleteViewController: UIViewController {
     private lazy var returnButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Вернуться", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.segmentActiveWhite, for: .normal)
         button.titleLabel?.font = .bodyRegular
         button.backgroundColor = .segmentActive
         button.layer.cornerRadius = 12
