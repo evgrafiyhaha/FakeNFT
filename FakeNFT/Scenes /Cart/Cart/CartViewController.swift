@@ -28,7 +28,7 @@ final class CartViewController: UIViewController {
     
     private lazy var filterButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(resource: .filter), for: .normal)
+        button.setImage(UIImage(resource: .filterButton), for: .normal)
         button.tintColor = .segmentActive
         button.addTarget(self, action: #selector(Self.didTapFilterButton), for: .touchUpInside)
         return button
@@ -188,7 +188,7 @@ final class CartViewController: UIViewController {
             self?.reloadData()
         }
         vc.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(resource: .chevronBackward),
+            image: UIImage(resource: .backButton),
             style: .plain,
             target: self,
             action: #selector(didTapClose)

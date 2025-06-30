@@ -45,7 +45,7 @@ final class CartTableViewCell: UITableViewCell {
     }()
     
     private lazy var deleteButton: UIButton = {
-        let image = UIImage(resource: .cart)
+        let image = UIImage(resource: .cartDelete)
         let button = UIButton(type: .system)
         button.addTarget(self, action: #selector(Self.didTapDeleteButton), for: .touchUpInside)
         button.setImage(image, for: .normal)
