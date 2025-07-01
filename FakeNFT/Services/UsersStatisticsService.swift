@@ -1,7 +1,5 @@
 import Foundation
 
-typealias UserStatisticsCompletion = (Result<[UserStatistics], Error>) -> Void
-
 protocol UsersStatisticsService {
     var currentPage: Int { get set}
     var sortParameter: SortType? { get set }

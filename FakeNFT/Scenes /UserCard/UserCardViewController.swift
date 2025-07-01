@@ -171,7 +171,7 @@ final class UserCardViewController: UIViewController, UserCardViewDelegate {
     }
     
     @objc private func collectionNFTButtonTapped() {
-        let userCollectionPresenter = UsersCollectionPresenter(service: presenter.service)
+        let userCollectionPresenter = UsersCollectionPresenter(service: presenter.service, user: presenter.user)
         let vc = UsersCollectionViewController(presenter: userCollectionPresenter)
         userCollectionPresenter.delegate = vc
         navigationController?.pushViewController(vc, animated: true)

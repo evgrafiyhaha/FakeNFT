@@ -1,10 +1,10 @@
 import Foundation
 import UIKit
 
-struct NftStatistics {
+struct NftStatistics: Decodable {
     let id: String
     let name: String
-    let images: UIImage // [String]
+    let images: [String]
     let rating: Int
     let price: Double
 }

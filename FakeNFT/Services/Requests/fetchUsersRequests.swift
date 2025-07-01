@@ -1,10 +1,3 @@
-//
-//  fetchUsersRequests.swift
-//  FakeNFT
-//
-//  Created by Николай Жирнов on 13.06.2025.
-//
-
 import Foundation
 
 struct FetchUsersRequest: NetworkRequest {

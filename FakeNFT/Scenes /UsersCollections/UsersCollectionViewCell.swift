@@ -1,13 +1,17 @@
 import UIKit
 
-class UsersCollectionViewCell: UICollectionViewCell {
+final class UsersCollectionViewCell: UICollectionViewCell {
+    
+    weak var presenter: UsersCollectionPresenter?
+    var indexPath: IndexPath?
     
     // MARK: - UI Elements
     
     lazy var imageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.isUserInteractionEnabled = true 
         imageView.contentMode = .scaleAspectFill
-        imageView.image = UIImage(resource: .mockNftStatistics)
+        imageView.backgroundColor = .systemGray6
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 12
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -68,6 +72,13 @@ class UsersCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
+    lazy var activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.hidesWhenStopped = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+    
     // MARK: - Initialization
     
     override init(frame: CGRect) {
@@ -79,11 +90,15 @@ class UsersCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(nameLabel)
         contentView.addSubview(priceLabel)
         contentView.addSubview(addCartButton)
+        imageView.addSubview(activityIndicator)
         
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+            activityIndicator.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
             
             likeButton.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 12),
             likeButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -12),
@@ -104,18 +119,37 @@ class UsersCollectionViewCell: UICollectionViewCell {
         ])
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        imageView.kf.cancelDownloadTask()
+        
+        imageView.image = nil
+        nameLabel.text = nil
+        priceLabel.text = nil
+        
+        activityIndicator.stopAnimating()
+        
+        ratingStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
+        likeButton.isSelected = false
+        addCartButton.isSelected = false
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     @objc
     private func handleLikeButtonTapped() {
-        
+        likeButton.isEnabled = false
+        presenter?.tappedLike(cell: self)
     }
     
     @objc
     private func handleAddCartButtonTapped() {
-        
+        addCartButton.isEnabled = false
+        presenter?.tappedChangeCart(cell: self)
     }
     
     func setupRating(_ rating: Int) {

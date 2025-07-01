@@ -60,14 +60,7 @@ final class StatisticsPresenter {
         cell.nameLabel.text = user?.name
         cell.countNFTsLabel.text = "\(user?.nfts.count ?? 0)"
         guard let newAvatarURL = URL(string: user?.avatar ?? "") else { return }
-        cell.avatarImageView.kf.setImage(with: newAvatarURL, placeholder: UIImage(resource: .mockImageUser)) { [weak self] result in
-            switch result {
-            case .success:
-                self?.delegate?.updateRowUsersTable(at: indexPath)
-            case .failure(let error):
-                print("ошибка загрузки аватарки: \(error.localizedDescription)")
-            }
-        }
+        cell.avatarImageView.kf.setImage(with: newAvatarURL, placeholder: UIImage(resource: .mockImageUser))
         cell.separatorInset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
     }
     

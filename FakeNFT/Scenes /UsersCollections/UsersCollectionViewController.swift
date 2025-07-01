@@ -1,11 +1,14 @@
 import UIKit
+import ProgressHUD
 
-class UsersCollectionViewController: UIViewController {
+final class UsersCollectionViewController: UIViewController {
     
     var presenter: UsersCollectionPresenter?
     
     private let widthCell = (UIScreen.main.bounds.width - 32 - 18) / 3
     private let heightCell: CGFloat = 192
+    
+    // MARK: - UI components
     
     private lazy var backButton: UIButton = {
         let button = UIButton()
@@ -31,6 +34,8 @@ class UsersCollectionViewController: UIViewController {
         return collectionView
     }()
     
+    // MARK: - Init
+    
     init(presenter: UsersCollectionPresenter?) {
         super.init(nibName: nil, bundle: nil)
         self.presenter = presenter
@@ -39,6 +44,13 @@ class UsersCollectionViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    deinit {
+        ProgressHUD.dismiss()
+        presenter?.removeData()
+    }
+    
+    // MARK: - ViewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,12 +66,22 @@ class UsersCollectionViewController: UIViewController {
             nftCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             nftCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
+        
+        if presenter?.countOfNft == 0 {
+            presenter?.loadData()
+            presenter?.loadLikesAndItmesInCart()
+            ProgressHUD.show()
+        }
     }
+    
+    // MARK: - @objc functions
     
     @objc private func backButtonTapped() {
         navigationController?.popViewController(animated: true)
     }
 }
+
+// MARK: - UICollectionViewDelegateFlowLayout
 
 extension UsersCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -74,19 +96,31 @@ extension UsersCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+// MARK: - UICollectionViewDataSource
+
 extension UsersCollectionViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        presenter?.countOfUsers ?? 0
+        presenter?.countOfNft ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "nftStatisticsCell", for: indexPath) as? UsersCollectionViewCell
         guard let cell else { return UICollectionViewCell() }
+        cell.indexPath = indexPath
         presenter?.configureCell(cell, at: indexPath)
         return cell
     }
 }
 
+// MARK: - UsersCollectionViewDelegate
+
 extension UsersCollectionViewController: UsersCollectionViewDelegate {
+    func reloadItems(index: IndexPath) {
+        nftCollectionView.reloadItems(at: [index])
+    }
     
+    func updateCollectionView() {
+        nftCollectionView.reloadData()
+        ProgressHUD.dismiss()
+    }
 }
