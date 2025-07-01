@@ -19,14 +19,14 @@ final class ItemsInCartStorageImpl: ItemsInCartStorage {
     private let syncQueue = DispatchQueue(label: "sync-likesStatistics-queue")
     
     func addItem(_ nftId: String) {
-        syncQueue.sync { [weak self] in
-            self?.storage.append(nftId)
+        syncQueue.sync {
+            self.storage.append(nftId)
         }
     }
     
     func removeItem(_ nftId: String) {
-        syncQueue.sync { [weak self] in
-            self?.storage.removeAll { $0 == nftId }
+        syncQueue.sync {
+            storage.removeAll { $0 == nftId }
         }
     }
     

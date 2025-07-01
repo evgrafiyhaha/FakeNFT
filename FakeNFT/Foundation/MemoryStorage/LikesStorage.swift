@@ -18,14 +18,14 @@ final class LikesStorageImpl: LikesStorage {
     private let syncQueue = DispatchQueue(label: "sync-likesStatistics-queue")
     
     func addLike(_ nftId: String) {
-        syncQueue.sync { [weak self] in
-            self?.storage.append(nftId)
+        syncQueue.sync {
+            self.storage.append(nftId)
         }
     }
     
     func removeLike(_ nftId: String) {
-        syncQueue.sync { [weak self] in
-            self?.storage.removeAll { $0 == nftId }
+        syncQueue.sync {
+            self.storage.removeAll { $0 == nftId }
         }
     }
     

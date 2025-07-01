@@ -47,7 +47,7 @@ final class UsersCollectionPresenter {
         }
     }
     
-    func loadLikesAndItmesInCart() {
+    func loadLikesAndItemsInCart() {
         if !likesAndItemsInCartIsLoaded {
             service.nftStatisticsService.fetchLikes()
             service.nftStatisticsService.fetchItemsInCart()
@@ -107,7 +107,7 @@ final class UsersCollectionPresenter {
         cell.imageView.kf.cancelDownloadTask()
         cell.activityIndicator.startAnimating()
         
-        var imageURL: URL? = nil
+        var imageURL: URL?
         if let urlString = nft.images.first {
             imageURL = URL(string: urlString)
         }

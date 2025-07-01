@@ -1,6 +1,6 @@
 import Foundation
 
-class ItemsInCartRequest: NetworkRequest {
+struct ItemsInCartRequest: NetworkRequest {
     var endpoint: URL? {
         URL(string: "\(RequestConstants.baseURL)/api/v1/orders/1")
     }

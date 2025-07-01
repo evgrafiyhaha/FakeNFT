@@ -1,5 +1,4 @@
 import Foundation
-import UIKit
 
 struct NftStatistics: Decodable {
     let id: String

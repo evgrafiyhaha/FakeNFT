@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 protocol UsersCollectionViewDelegate: AnyObject {
     func updateCollectionView()
