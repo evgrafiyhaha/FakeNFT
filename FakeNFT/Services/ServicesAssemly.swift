@@ -4,15 +4,24 @@ final class ServicesAssembly {
     private let nftStorage: NftStorage
     
     private let usersStorage: UsersStatisticsStorage
+    private let nftStatisticsStorage: NftStatisticsStorage
+    private let likesStorage: LikesStorage
+    private let itemsInCartStorage: ItemsInCartStorage
 
     init(
         networkClient: NetworkClient,
         nftStorage: NftStorage,
-        usersStorage: UsersStatisticsStorage
+        usersStorage: UsersStatisticsStorage,
+        nftStatisticsStorage: NftStatisticsStorage,
+        likesStorage: LikesStorage,
+        itemsInCartStorage: ItemsInCartStorage
     ) {
         self.networkClient = networkClient
         self.nftStorage = nftStorage
         self.usersStorage = usersStorage
+        self.nftStatisticsStorage = nftStatisticsStorage
+        self.likesStorage = likesStorage
+        self.itemsInCartStorage = itemsInCartStorage
     }
 
     var nftService: NftService {
@@ -26,6 +35,15 @@ final class ServicesAssembly {
         UserStatisticsServiceImpl(
             networkClient: networkClient,
             storage: usersStorage
+        )
+    }()
+    
+    lazy var nftStatisticsService: NftStatisticsService = {
+        NftStatisticsServiceImpl(
+            networkClient: networkClient,
+            storage: nftStatisticsStorage,
+            likeStorage: likesStorage,
+            itemsInCartStorage: itemsInCartStorage
         )
     }()
 }
