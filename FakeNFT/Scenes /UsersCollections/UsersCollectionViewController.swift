@@ -70,7 +70,7 @@ final class UsersCollectionViewController: UIViewController {
         if presenter?.countOfNft == 0 {
             presenter?.loadData()
             presenter?.loadLikesAndItemsInCart()
-            ProgressHUD.show()
+            ProgressHUD.animate()
         }
     }
     

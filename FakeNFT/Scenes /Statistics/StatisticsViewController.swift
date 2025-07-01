@@ -151,7 +151,7 @@ extension StatisticsViewController: StatisticsViewControllerDelegate {
     
     func dataIsLoad() {
         DispatchQueue.main.async {
-            ProgressHUD.show()
+            ProgressHUD.animate()
         }
     }
 

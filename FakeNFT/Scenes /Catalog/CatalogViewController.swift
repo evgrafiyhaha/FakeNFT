@@ -34,7 +34,7 @@ class CatalogViewController: UIViewController {
     
     private lazy var filterButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "filterButton"), for: .normal)
+        button.setImage(UIImage(resource: .filterButton), for: .normal)
         button.addTarget(self, action: #selector(filterButtonDidTap), for: .touchUpInside)
         return button
     }()
