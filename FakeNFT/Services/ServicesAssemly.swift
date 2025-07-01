@@ -46,4 +46,12 @@ final class ServicesAssembly {
             itemsInCartStorage: itemsInCartStorage
         )
     }()
+  
+    var catalogNetworkClient: NetworkClient {
+           networkClient
+       }
+  
+    var cartNetworkClient: NetworkClient {
+           networkClient
+       }
 }
