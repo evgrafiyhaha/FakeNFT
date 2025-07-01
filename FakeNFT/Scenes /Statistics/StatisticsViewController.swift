@@ -145,10 +145,6 @@ extension StatisticsViewController: StatisticsViewControllerDelegate {
         }
     }
     
-    func updateRowUsersTable(at indexPath: IndexPath) {
-        usersTableView.reloadRows(at: [indexPath], with: .automatic)
-    }
-    
     func updateFullUsersTable() {
         usersTableView.reloadData()
     }
